@@ -1,0 +1,13 @@
+@import "../../../assets/scss/_variables";
+
+.mat-table{
+  font-size: $shFontSizeExtraSm;
+  font-family: inherit;      
+}
+.mat-header-row, .mat-row{
+  border-bottom: 3px solid $white;
+  padding: 0px 10px;
+}
+.mat-cell{
+  font-size: inherit;
+}

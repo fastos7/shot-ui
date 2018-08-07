@@ -1,0 +1,64 @@
+<h6 class="pt-3">Patient Search</h6>
+<div class=row>
+  <div class=col-9>
+    <alert id=searchPatientMultipleAlert></alert>
+  </div>
+</div>
+<div class=row>
+    <div class=col>
+      <form name="searchPatientMultipleForm" [formGroup]="searchPatientMultipleForm" (ngSubmit)="onSubmit()" class="form-group">
+        <fieldset>
+          <div class=row *ngIf="!isValid">
+            <div class="col error-block pb-3">
+              In order to search you need to enter at least one out of First Name, Surname and MRN / UR.
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-3">
+                <div class=form-field>
+                  <label for=surName>Surname :</label>
+                  <input type="text" id=surName name=surName formControlName="surName" placeholder="Surname" class="form-control" [ngClass]="{' ng-touched ng-invalid' : !isValid}" (keyup)='inputKeyUpHandler($event)'>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="col-3">
+              <div class=form-field>
+                  <label for=firstName>First Name :</label>
+                  <input type="text" id=firstName name=firstName formControlName="firstName" placeholder="First Name" class="form-control" [ngClass]="{' ng-touched ng-invalid' : !isValid}" (keyup)='inputKeyUpHandler($event)'>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-3">
+                <div class=form-field>
+                  <label for=ur>MRN / UR :</label>
+                  <input type="text" id=ur name=ur formControlName="ur" placeholder="MRN / UR" class="form-control" [ngClass]="{' ng-touched ng-invalid' : !isValid}" (keyup)='inputKeyUpHandler($event)'>
+                </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-3">
+                <div class=form-field>
+                  <label for=status>Status :</label>
+                  <select id=status name=status class="form-control" formControlName="status">
+                    <option value="">Select a status</option>
+                    <option value="Yes">Active</option>
+                    <option value="No">Inactive</option>
+                  </select>
+                </div>
+              </div>
+          </div>
+          <div class=row>
+            <div class=col>
+              <button class="btn btn-primary" type="submit" [disabled]="!searchPatientMultipleForm.valid">Search
+                <i *ngIf="loading" class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>    
+              </button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+</div>
+<hr>
+<app-list-patients [ngClass]="{'invisible' : !showPatientListTable}" [patientList]="patientList" [patientCount]="patientCount"></app-list-patients>

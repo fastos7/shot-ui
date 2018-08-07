@@ -1,0 +1,73 @@
+<div class=row>
+  <div class=col>
+    <div class="row" style="padding-top: 2rem;">
+      <div class="col-12" style="padding-left: 1rem;">
+        <alert></alert>
+        <label>Add or edit your news items here - max 6 items permitted</label>
+      </div>
+    </div>
+    <div class="row" style="padding-top: 2rem;">
+      <div class="col-12">
+        <div class=row style="padding-left: 2rem; padding-bottom: 2rem;">
+          <ng-template ngFor let-newsFeed let-i="index" [ngForOf]="newsFeeds">
+            <div class="col-4 rounded news-feed">
+              <div class=row>
+                <div class='col text-right news-feed-news-feed-small-text'>{{newsFeed.postedDate | date:'dd/MM/yyyy HH:mm'}}</div>
+              </div>
+              <div class=row>
+                <div class='col news-feed-heading'>{{newsFeed.header}}</div>
+              </div>
+              <div class='row news-feed-content'>
+                <div class='col' [innerHTML]="newsFeed.shortDesc"></div>
+              </div>
+              <div class=row>
+                <div class='col'>
+                  <a href="javascript:void(0);"
+                    (click)="onEditNewsFeed(newsFeed);">Edit</a>
+                </div>
+                <div class='col'>
+                  <a href="javascript:void(0);"
+                    (click)="onDeleteNewsFeed(newsFeed);">Delete</a>
+                </div>
+                <div class='col-8'>
+                  <a href="javascript:void(0);" 
+                    (click)="onViewNewsFeed(newsFeed);"
+                    data-toggle="modal" 
+                    data-target="#display_newsFeed_modal">
+                    View Entire Article
+                  </a>
+                </div>
+              </div>
+              <div class=row>
+                <div class='col text-right news-feed-small-text'>Posted by {{newsFeed.postedBy}}</div>
+              </div>
+            </div>
+            <div class="col-1 news-gap">&nbsp;</div>
+
+            <ng-template [ngIf]="i == 2">
+              <div class="col-12 news-gap-line">&nbsp;</div>
+            </ng-template>
+          </ng-template>
+
+          <ng-template [ngIf]="newsFeeds.length < 6">
+            <div class="col-4 rounded news-feed text-center align-middle">
+              <div class=row style="line-height: 5rem;">
+                <div class='col'>&nbsp;</div>
+              </div>
+              <div class=row>
+                <div class='col'>
+                  <a href="javascript:void(0);"
+                    (click)="onAddNewsFeed();">Add another News Item</a>
+                </div>
+              </div>
+              <div class=row style="line-height: 5rem;">
+                <div class='col'>&nbsp;</div>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

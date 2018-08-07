@@ -1,0 +1,28 @@
+<div class="mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="Sites">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'width-33'">Sites</mat-header-cell>
+      <mat-cell *matCellDef="let userSite" [ngClass]="'width-33'">{{userSite.customerName}} <span class="highlighted-label">{{userSite.isDefaultSite? '(Default Site)':''}}</span></mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Roles">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'width-33'">Roles</mat-header-cell>
+      <mat-cell *matCellDef="let userSite" [ngClass]="'width-33'">
+        <ng-template ngFor let-role [ngForOf]="userSite.roleDTOs" let-i="index">{{role.description}}{{i <= userSite.roleDTOs.length-2?',':''}}<br></ng-template>
+
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Bill To">
+      <mat-header-cell *matHeaderCellDef [ngClass]="'width-33'">Bill To</mat-header-cell>
+      <mat-cell *matCellDef="let userSite" [ngClass]="'width-33'">
+        <ng-template ngFor let-billTo [ngForOf]="userSite.billTos" let-i="index">{{billTo.customerName}}{{i <= userSite.billTos.length-2?',':''}}<br></ng-template>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;let userSite" class="mat-row"></mat-row>
+  </mat-table>
+
+</div>

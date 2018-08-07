@@ -1,0 +1,40 @@
+@import "../../../assets/scss/_variables";
+
+.mat-table{
+  font-family: inherit;      
+}
+.mat-header-row, .mat-row{
+  border-bottom: 3px solid $white;
+  padding: 0px 10px;
+  min-height: 30px;
+}
+.mat-cell{
+  font-size: inherit;
+}
+.mat-header-row {
+  border-bottom: 2px solid #ccc !important;
+  min-height: 30px
+}
+.mat-elevation-z8{
+  box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 0px 0px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12);
+  width: 99%;
+  margin:0 auto;
+}
+.mat-row{
+  align-items: top;
+}
+
+.mat-table {
+  display:table;
+  width:100%;
+
+  > .mat-header-row, > .mat-row {
+    display:table-row;
+
+    > .mat-header-cell, >.mat-cell{
+      display:table-cell;
+      vertical-align:top;
+      padding: 8px 0 8px 5px;      
+    }
+  }
+}

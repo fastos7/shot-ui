@@ -1,0 +1,22 @@
+<header>
+
+    <div *ngIf="isuserLoggedIn(); then  postLogin else preLogin"> 
+        
+     </div>
+     <ng-template #postLogin>
+        <app-menu>/</app-menu>
+     </ng-template>
+    <ng-template #preLogin>
+        <div class="row px-5 mx-0">
+            <div class="col-md-2 mx-auto"><a routerLink="/login"><img src="../assets/images/slade.png" /></a></div>
+            <div class="col-md-1">
+                <div class = "text-md-right">
+                    <span >
+                        <a routerLink="/contact-us">Contact Us</a>
+                    </span>
+                </div >
+            </div>
+        </div> 
+    </ng-template>    
+  
+</header>

@@ -1,0 +1,115 @@
+<div id="edit_add_customer_preference_modal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" #edit_add_customer_preference_modal>
+    <div class="modal-dialog customer-site-modal">    
+      <div class="modal-content">         
+        <div class="modal-header">
+          <h5 >{{title}}</h5>        
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col pt-2 pb-2">
+                    {{headerMessage}}
+                </div> 
+           </div> 
+            <form class="form-horizontal" 
+                  role="form"
+                  [formGroup]="addEditCustomerPreferenceForm"
+                  novalidate>
+              <div class="form-group form-inline"> 
+                    <label class="control-label" for="productDescription">Product :</label>                    
+                    <p class="form-control-static ml-3" id="productDescription">{{productName}}</p>
+              </div> 
+  
+              <div class="form-group"> 
+                    <label class="control-label">Dose Range :</label>                                    
+              </div> 
+              <div class="form-group">                
+                  <div class="row">
+                    <div class="col-1 pt-2">                      
+                        From
+                    </div>
+                    <div class="col-2">                      
+                        <input type="number" 
+                               class="form-control"
+                               formControlName="doseFrom"
+                               name="doseFrom"
+                               id="doseFrom">                        
+                    </div>
+                    <div class="col-1 pt-2">                      
+                        to
+                    </div>
+                    <div class="col-2">                      
+                        <input type="number" 
+                               class="form-control"
+                               formControlName="doseTo"
+                               name="doseTo"
+                               id="doseTo">                        
+                    </div>
+                    <div class="col pt-2">                      
+                        {{unitOfMeasure}}, apply the below details while ordering
+                    </div>
+                  </div>
+                  <div class="row" *ngIf="formErrors.doseFrom || formErrors.doseTo">
+                      <div class="col-12">
+                        <div class="error-block">
+                            <ul>
+                                <li *ngIf="formErrors.doseFrom">{{formErrors.doseFrom}}</li>
+                                <li *ngIf="formErrors.doseTo">{{formErrors.doseTo}}</li>
+                            </ul>
+                        </div>
+                      </div>
+                  </div>
+              </div>       
+              
+              <app-product-attributes [form]="addEditCustomerPreferenceForm"
+                                      [formErrors]="formErrors"  
+                                      [showRemovedClosedSystem]="false"                                      
+                                      [product]="product"
+                                      (selectedDeliveryMechanism)="handleSelectedDeliveryMechanism($event)"
+                                      (selectedAdministrationRoute)="handleSelectedAdministrationRoute($event)">
+              </app-product-attributes>               
+              <div class="form-group">                
+                  <div class="row">
+                    <div class="col">
+                        <label for="volume">Volume:</label>
+                        <div class="row">
+                          <div class="col">    
+                              <input class="form-control mr-2" id="volume" style="width: 80%;display: inline;" type="number" formControlName="volume" name="volume">mL
+                              <div *ngIf="formErrors.volume" class="help error-block">{{formErrors.volume}}</div>
+                          </div>  
+                          <div class="col pt-2">    
+                              <input type="checkbox" id="exact" value="" class="mr-2" formControlName="exact" name="exact">Exact
+                          </div>  
+                        </div>
+                                              
+                    </div>    
+                    <div class="col">
+                        <label for="volume">Infusion Duration:</label>
+                        <input class="form-control mr-2" id="infusionDuration" style="width: 80%;display: inline;" type="number" formControlName="infusionDuration" name="infusionDuration">hours
+                        <div *ngIf="formErrors.infusionDuration" class="help error-block">{{formErrors.infusionDuration}}</div>
+                    </div>
+                  </div>
+              </div>      
+              <div class="form-group">                
+                  <div class="row">
+                    <div class="col">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" class="form-control" id="quantity" formControlName="quantity" name="quantity"/>                                                
+                        <div *ngIf="formErrors.quantity" class="help error-block">{{formErrors.quantity}}</div>
+                    </div>    
+                    <div class="col">
+                        <label for="comments">Comments:</label>
+                        <textarea class="form-control" rows="3" id="comments" formControlName="comments" name="comments"></textarea>
+                        <div *ngIf="formErrors.comments" class="help error-block">{{formErrors.comments}}</div>
+                    </div>
+                  </div>
+              </div>     
+            </form>
+            <alert [id]="'displayCustomerPreferenceAlert'"></alert> 
+        </div>  
+        <div class="modal-footer">        
+          <button type="button" class="btn btn-link" data-dismiss="modal" #cancelBtn (click)="OnCancel()" id="cancelBtn">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmit()" id="submitBtn">{{submitButtonTitle}}</button>
+        </div>
+      </div>    
+    </div> 
+  </div>

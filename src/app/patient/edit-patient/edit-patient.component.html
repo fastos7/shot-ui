@@ -1,0 +1,83 @@
+<div id="edit_patient_modal" class="modal fade" role="dialog" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">    
+    <div class="modal-content">         
+      <div class="modal-header">
+        <h5>Edit Patient</h5>        
+      </div>
+      <div class="modal-body">
+        <div class=row>
+          <div class=col-12>
+            <alert id=editPatientAlert></alert>
+          </div>
+        </div>
+        <div class="row pb-2">
+          <div class=col-12>
+            <div class="bodyText">
+              Below are the details of the patient you are trying to edit.<br>
+              Click Save to update the patient details. To discard changes click cancel.
+            </div>
+          </div>
+        </div>
+        <form class=form-group role="form" [formGroup]="editPatientForm" novalidate>
+          <div class=row *ngIf="!isValid">
+            <div class="col error-block pb-3">
+              In order to add a new patient please specify at least one out of First Name, Surname and MRN / UR.
+            </div>
+          </div>
+          <div class="row">
+            <div class=col-6>
+              <div class="form-field"> 
+                <label for="epSurName">Surname :</label>                    
+                <input type="text" class="form-control" formControlName="epSurName" name="epSurName" id="epSurName" placeholder="Surname" [ngClass]="{' ng-touched ng-invalid' : !isValid}" (keyup)='inputKeyUpHandler($event)'>
+                <div *ngIf="formErrors.epSurName" class="help error-block">{{formErrors.epSurName}}</div>
+              </div> 
+            </div>
+            <div class=col-6>
+              <div class="form-field"> 
+                <label for="epFirstName">First Name :</label>                    
+                <input type="text" class="form-control" formControlName="epFirstName" name="epFirstName" id="epFirstName" placeholder="First Name" [ngClass]="{' ng-touched ng-invalid' : !isValid}" (keyup)='inputKeyUpHandler($event)'>
+                <div *ngIf="formErrors.epFirstName" class="help error-block">{{formErrors.epFirstName}}</div>
+              </div> 
+            </div>
+            <div class=col-6>
+              <div class="form-field"> 
+                <label for="epUr">MRN / UR :</label>                    
+                <input type="text" class="form-control" formControlName="epUr" name="epUr" id="epUr" placeholder="MRN / UR" [attr.maxlength]="20" [ngClass]="{' ng-touched ng-invalid' : !isValid}" (keyup)='inputKeyUpHandler($event)'>
+                <div *ngIf="formErrors.epUr" class="help error-block">{{formErrors.epUr}}</div>
+              </div> 
+            </div>
+            <div class=col-6>
+              <div class="form-field"> 
+                <label for="epDob">Date Of Birth :</label>                    
+                <input type=text matInput [matDatepicker]="picker" [max]="maximumDate" name="epDob" formControlName="epDob" id="epDob" class="form-control edit-pat-dob"/>
+                <mat-datepicker-toggle matSuffix [for]="picker" class="edit-pat-dob-toggle"></mat-datepicker-toggle>
+                <mat-datepicker #picker disabled="false"></mat-datepicker>
+              </div> 
+            </div>
+            <div class=col-6>
+              <div class="form-field"> 
+                <label for="epStatus">Status :</label>                    
+                <select class="form-control" formControlName="epStatus" name="epStatus" id="epStatus">
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+                <div *ngIf="formErrors.epStatus" class="help error-block">{{formErrors.epStatus}}</div>
+              </div> 
+            </div>
+            <div class=col-6>
+              <div class="form-field"> 
+                <label for="epTrialID">Trial ID :</label>                    
+                <input type="text" class="form-control" formControlName="epTrialID" name="epTrialID" id="epTrialID" placeholder="Trial ID" [attr.maxlength]="20">
+                <div *ngIf="formErrors.epTrialID" class="help error-block">{{formErrors.epTrialID}}</div>
+              </div> 
+            </div>
+          </div>
+        </form>
+      </div>  
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-link" data-dismiss="modal" #cancelBtn (click)="onEditCancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+      </div>
+    </div>    
+  </div> 
+</div>

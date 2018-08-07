@@ -1,0 +1,89 @@
+<div class=row>
+  <div class=col>
+    <form name="addUserForm" class="form-group" [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+      <fieldset>
+        <div class=row>
+          <div class="col pb-3">
+            <alert></alert>
+            Enter at least one of the criteria below to search for a user
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class=form-field>
+              <label for=firstNameS>First Name:</label>
+              <input type="text" id="firstNameS" name="firstNameS" formControlName="firstName" placeholder="First Name" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class=form-field>
+              <label for=lastNameS>Last Name:</label>
+              <input type="text" id=lastNameS name=lastNameS formControlName="lastName" placeholder="Last Name" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class=form-field>
+              <label for=emailS>Email:</label>
+              <input type="text" id=emailS name=emailS formControlName="email" placeholder="Email" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class=form-field>
+              <label for=statusS>Status:</label>
+              <select id=statusS name=statusS formControlName="status" class="form-control">
+                <option value="">Select a Status</option>
+                <option value="true">Active</option>
+                <option value="false">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class=form-field>
+              <label for=siteS>Site:</label>
+              <select id=siteS name=siteS formControlName="site" class="form-control" (change)="onSiteSelected()">
+                <option value="">Select a Site</option>
+                <ng-template ngFor let-site [ngForOf]="sites">
+                  <option [ngValue]="site.customerKey">{{ site.customerName }}</option>
+                </ng-template>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class=form-field>
+              <label for=roleS>Role:</label>
+              <select id=roleS name=roleS formControlName="role" class="form-control">
+                <option value=""></option>
+                <ng-template ngFor let-role [ngForOf]="roles">
+                  <option [value]="role.roleId">{{ role.description }}</option>
+                </ng-template>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+
+    <!-- Display Search Results -->
+    <div class="row" *ngIf="users != null">
+      <div class=col>
+        <hr>
+        <app-search-user-results [users]="users"></app-search-user-results>
+      </div>
+    </div>
+  </div>
+</div>

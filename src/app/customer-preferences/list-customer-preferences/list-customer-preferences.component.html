@@ -1,0 +1,134 @@
+
+<hr/>
+<div class="row mb-1" *ngIf="customerPreferences?.length > 0">
+    <div class="col-6 text-left">
+      <h6>We found below preferences for the drug: <b>{{displaySearchMessage}}</b></h6>
+    </div>    
+    <div class="col-6 text-right">
+        <div>
+            <span class=preference-text>Preference Actions:</span>
+            <a class="btn" [ngClass]="{'disabled':isArrowUpBtnDisabled}" 
+                (click)="OnArrowUp()" 
+                matTooltip="Move Up" 
+                [matTooltipPosition]="'above'"
+                id="ArrowUpBtn">
+                    <i [ngClass]="{'text-disabled':isArrowUpBtnDisabled , 'text-success':!isArrowUpBtnDisabled}" class="p-1 fa fa-arrow-circle-up fa-lg"></i>
+            </a>
+            <a class="btn" [ngClass]="{'disabled':isArrowDownBtnDisabled}" 
+                        (click)="OnArrowDown()" 
+                        matTooltip="Move Down" 
+                        [matTooltipPosition]="'above'"
+                        id="ArrowDownBtn">
+                            <i [ngClass]="{'text-disabled':isArrowDownBtnDisabled , 'text-danger':!isArrowDownBtnDisabled}" class="p-1 fa fa-arrow-circle-down fa-lg"></i>
+            </a>
+            <a class="btn" [ngClass]="{'disabled':isEditBtnDisabled}" 
+                (click)="OnEdit()" 
+                matTooltip="Edit" 
+                [matTooltipPosition]="'above'" 
+                data-toggle="modal" 
+                data-target="#edit_add_customer_preference_modal"
+                id="EditBtn">
+                    <i [ngClass]="{'text-disabled':isEditBtnDisabled , 'text-warning':!isEditBtnDisabled}" class="p-1 fa fa-edit fa-lg"></i>
+            </a>
+            <a class="btn" [ngClass]="{'disabled':isDeleteBtnDisabled}" 
+                (click)="OnDelete()" 
+                matTooltip="Delete" 
+                [matTooltipPosition]="'above'" 
+                data-toggle="modal" 
+                data-target="#remove_customer_preference_modal"
+                id="DeleteBtn">
+                    <i [ngClass]="{'text-disabled':isDeleteBtnDisabled , 'text-danger':!isDeleteBtnDisabled}" class="p-1 fa fa-trash fa-lg"></i>
+            </a>
+        </div>
+    </div>                                                     
+</div>
+<div class="row">
+    <div class="col-12">
+        <alert [id]="'listCustomerPreferenceAlert'"></alert>
+    </div>
+</div>
+<div class="row pb-2" *ngIf="customerPreferences?.length <= 0">
+  <div class="col-12 text-left">
+      <h6>We found no preferences for the drug: <b>{{displaySearchMessage}}</b></h6>      
+  </div>                                                      
+</div>
+<div class="row">            
+  <div class="col-12">
+      <div class="mat-elevation-z8">
+
+          <mat-table #table [dataSource]="convertToMaterialDatasource(customerPreferences)">
+            
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+            <ng-container matColumnDef="select">
+              <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                  <input type="checkbox" 
+                         name="" 
+                         value="true" 
+                         attr.prefId="{{element.prefId}}"
+                         (click)="onClickCustomerPrefences($event)"
+                         #checkbox />
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="rank">
+                <mat-header-cell *matHeaderCellDef>Rank</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.rank}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="doseRange">
+                <mat-header-cell *matHeaderCellDef>Dose Range</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element | formatPreferenceDoseRange}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="diluentContainer">
+                <mat-header-cell *matHeaderCellDef>Diluent / Container</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element | formatPreferenceDiluentContainer}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="route">
+                <mat-header-cell *matHeaderCellDef>Route</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.administrationRoute ? element.administrationRoute.description : "-"}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="volume">
+                <mat-header-cell *matHeaderCellDef>Volume</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.volume  | formatVolume}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="exact">
+                <mat-header-cell *matHeaderCellDef>Exact</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.exact | formatPreferenceExact}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="quantity">
+                <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.quantity ? element.quantity : "-"}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="infusionDuration">
+                <mat-header-cell *matHeaderCellDef>Infusion Duration</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.infusionDuration ? (element.infusionDuration + " hours") : "-"}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="comments">
+                <mat-header-cell *matHeaderCellDef>Comments</mat-header-cell>
+                <mat-cell *matCellDef="let element">{{element.comments ? (element.comments) : "-"}}</mat-cell>
+            </ng-container>
+
+          </mat-table>
+
+        </div>
+  </div>
+</div>    
+<div class="row pt-4 pb-4">  
+  <div class="col-12 text-left">
+    <button [attr.id]="'AddAnotherPreferenceForThisDrugBtn'" class="btn btn-info btn-link" type="button" data-toggle="modal" data-target="#edit_add_customer_preference_modal" (click)="onClickAddPreference()">Add another preference for this drug</button>
+  </div>
+</div>
+<app-display-customer-preference [mode]="addEditMode"                                 
+                                 [product]="product"
+                                 [currentlySelectedCustomerPreference]="currentlySelectedCustomerPreference" ></app-display-customer-preference>
+<app-remove-customer-preferences [customerPreferencesToBeDeleted]="customerPreferencesToBeDeleted"></app-remove-customer-preferences>                                 

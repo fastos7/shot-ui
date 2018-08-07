@@ -1,0 +1,68 @@
+<div class="row p-4">
+  <div class="col-2 pt-2">
+      <label>Select a Trial: </label>
+  </div>
+  <div class="col-4">
+    <app-search-trial [trialSearchId]="'FreeStockSearchTrial'"
+                      (selectedTrial)="handleSelectedTrial($event)">      
+    </app-search-trial>           
+  </div>                                              
+</div> 
+<div class="row pl-4 pb-4" *ngIf="patientStockAllocationList && patientStockAllocationList.length > 0">
+  <div class="col-6">
+        <div class="user-card clearfix user-card-active p-2">
+                <div class="user-card-header clearfix">                
+                    <div class="user-detail-container">
+                        <span class=user-det-lbl>Trial Name :</span>
+                        <span class=user-det-data>Danube</span>
+                    </div>
+                    <div class="user-detail-container">
+                    <span class=user-det-lbl>DSU :</span>
+                    <span class="user-det-data">Cisplatin Vial 50mg/50ml (DBL)</span>
+                    </div>                
+                </div>  
+                <div class="mat-elevation-z8">          
+                    <mat-table #table [dataSource]="convertToMaterialDatasource(patientStockAllocationList)">
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            
+                        <ng-container matColumnDef="poolOrPatient">
+                        <mat-header-cell *matHeaderCellDef class="text-left">Pool / Patient</mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="text-left">
+                            <a href="javascript:void(0);"                                                   
+                                (click)="displayHistory()"
+                                id="DisplayHistoryLink"
+                                class="pr-2">
+                                {{element.patientName | displayFreeStockPatient}}
+                            </a>
+                        </mat-cell>
+                        </ng-container>
+                
+                        <ng-container matColumnDef="qtyAtHand">
+                            <mat-header-cell *matHeaderCellDef class="text-right">Qty at hand</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="text-right">{{element.qtyAtHand}}</mat-cell>
+                        </ng-container>
+                        
+                        <ng-container matColumnDef="actions">
+                            <mat-header-cell *matHeaderCellDef class="text-center">Transfer</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="text-center">
+                                <a href="javascript:void(0);"                                                   
+                                    (click)="transferIn()"
+                                    id="TransferInLink"
+                                    class="pr-2">Transfer In</a>
+                                <a href="javascript:void(0);"                                                   
+                                    (click)="transferOut()"
+                                    id="TransferOutLink"
+                                    class="pr-2">Transfer Out</a>
+                                <a href="javascript:void(0);"                                                   
+                                    (click)="deactivate()"
+                                    id="DeactivateLink">Deactivate</a>
+                            </mat-cell>
+                        </ng-container>
+                        
+                    </mat-table>              
+                </div>
+        </div>        
+  </div>
+</div>  

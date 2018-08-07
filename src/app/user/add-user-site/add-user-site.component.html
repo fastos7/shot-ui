@@ -1,0 +1,61 @@
+    <div class="site-container">
+      <div class=row>
+        <div class="col-1">
+          <label for=status>Site:</label>
+        </div>
+        <div class="col-5">
+          <select class="form-control" [(ngModel)]="selectedUserSite" (change)="userSiteSelected()">
+              <option value="">Select a Site</option>
+              <ng-template ngFor let-site [ngForOf]="sites">
+              <option [ngValue]="site">{{ site.customerName }}</option>
+            </ng-template>
+          </select>
+        </div>
+      </div>
+
+      <ng-template [ngIf]="!isSladeAdmin">
+        <div class=row *ngIf="showRoles">
+          <hr class="addUserHR">
+          <div class="col-1">
+            <label for=status>Role(s):</label>
+          </div>
+          <div class="col">
+            <div class="row">
+              <div class="col-3 form-check" *ngFor="let role of roles">
+                <ng-template [ngIf]="role.roleId != 8">
+                  <input class="form-check-input" type="checkbox" [value]="role" (change)="updateRoles(role, $event)" [checked]="isUserRole(role)"><label class="role-and-bill-to-label">{{role.description}}</label>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=row *ngIf="showBillTo">
+          <hr class="addUserHR">
+          <div class="col-1">
+            <label for=status>Bill To</label>
+          </div>
+          <div class="col">
+            <div class="row">
+              <div class="col-3 form-check" *ngFor="let billTo of selectedUserSite.billTos">
+                <input class="form-check-input" type="checkbox" [value]="billTo" (change)="updateBillTos(billTo, $event)" [checked]="isUserBillTo(billTo)"><label class="role-and-bill-to-label">{{billTo.customerName}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=row>
+          <hr class="addUserHR">
+          <ng-container *ngIf="userSite.isDefaultSite; then defaultSiteTemplate; else makeDefaultSiteTemplate"></ng-container>
+          <ng-template #defaultSiteTemplate>
+            <div class="col highlighted-label" style="display: table;">Default Site</div>
+          </ng-template>
+          <ng-template #makeDefaultSiteTemplate>
+            <div class=col style="display: table;">
+              <a class="btn btn-link" href="javascript:void(0);" (click)='makeSiteDefault()'>Make Default Site</a>
+              <a class="btn btn-link" href="javascript:void(0);" (click)='removeSite()'>Remove Site</a>
+            </div>
+          </ng-template>
+        </div>
+      </ng-template>
+    </div>

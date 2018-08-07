@@ -1,0 +1,12 @@
+<ng2-completer [(ngModel)]="searchProductStr"               
+               [datasource]="remoteDataService"  
+               [minSearchLength]="3" [matchClass]="'match'"               
+               [pause]="500" textNoResults="No Products found"
+               textSearching="Searching Products..."
+               placeholder="Product"
+               [inputClass]=" isValid ? 'form-control' : 'form-control ng-invalid ng-touched'"               
+               class="completer-limit" [initialValue]="searchProductStr"  
+               (selected)='onProductSelected($event)'               
+               [inputId]="productSearchId">
+</ng2-completer>  
+

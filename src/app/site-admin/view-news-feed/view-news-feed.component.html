@@ -1,0 +1,17 @@
+<div id="display_newsFeed_modal" class="modal fade" role="dialog" data-keyboard="true"  #display_newsFeed_modal>
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content" *ngIf="newsFeed != null">
+      <div class="modal-header">
+        <h5>{{newsFeed.header}}</h5>
+        <div class="news-feed-small-text">{{newsFeed.postedDate | date:'dd/MM/yyyy HH:mm'}}, Posted by {{newsFeed.postedBy}}</div>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="newsFeed.longDesc" class="news-feed-long-desc"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [ngClass]="{' btn btn-link': allowEditing, ' btn btn-primary': !allowEditing}" data-dismiss="modal" #cancelBtn>Close</button>
+        <button *ngIf="allowEditing" type="button" class="btn btn-primary" (click)="onEditNewsFeed(newsFeed);">Edit</button>
+      </div>
+    </div>
+  </div>
+</div>

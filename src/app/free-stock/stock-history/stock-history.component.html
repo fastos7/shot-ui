@@ -1,0 +1,51 @@
+<div class="modal-header">  
+  <h5 >Stock History</h5>    
+</div>  
+<div class="modal-body">
+<div class="row pb-4">
+  <div class="col">
+    <div class="mat-elevation-z8">        
+      <mat-table #table [dataSource]="convertToMaterialDatasource(stockHistoryList)">
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+        <ng-container matColumnDef="datetimeUpdated">
+            <mat-header-cell *matHeaderCellDef class="text-left">Date/Time Updated</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="text-left">{{element.datetimeUpdated | date:'dd-MM-yyyy HH:mm:ss'}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="updatedBy">
+            <mat-header-cell *matHeaderCellDef class="text-left">Updated By</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="text-left">{{element.updatedBy}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="transactionType">
+            <mat-header-cell *matHeaderCellDef class="text-left">Transaction Type</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="text-left">{{element.transactionType}}</mat-cell>
+        </ng-container>  
+        <ng-container matColumnDef="qtyDifference">
+            <mat-header-cell *matHeaderCellDef class="text-right">Qty Difference</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="text-right">{{element.qtyDifference}}</mat-cell>
+        </ng-container>  
+        <ng-container matColumnDef="qtyBalance">
+            <mat-header-cell *matHeaderCellDef class="text-right">Qty Balance</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="text-right">{{element.qtyBalance}}</mat-cell>
+        </ng-container>  
+        <ng-container matColumnDef="comments">
+            <mat-header-cell *matHeaderCellDef class="text-left pl-2">Comments</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.comments}}</mat-cell>
+        </ng-container> 
+      </mat-table>  
+      
+      <mat-paginator #paginator
+                    [pageSize]="10"
+                    [pageSizeOptions]="[5, 10, 20]">
+      </mat-paginator>
+      
+    </div>
+  </div>
+  </div>  
+</div>
+<div class="modal-footer">        
+    <button type="button" class="btn btn-primary" id="CloseBtn" (click)="close()">Close</button>              
+</div>
+  

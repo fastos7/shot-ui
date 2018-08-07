@@ -1,0 +1,17 @@
+<div class=row>
+  <div class="col">
+      <h4>Account Preferences</h4>
+  </div>
+</div>
+<div class=row>
+  <div class=col>
+      <mat-tab-group dynamicHeight="true" (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="tabIndex">
+          <mat-tab label="Site Preferences">
+            <app-account-preferences></app-account-preferences>
+          </mat-tab>
+          <mat-tab label="Change Password">
+            <app-change-password></app-change-password>
+          </mat-tab>
+      </mat-tab-group>
+  </div>
+</div>

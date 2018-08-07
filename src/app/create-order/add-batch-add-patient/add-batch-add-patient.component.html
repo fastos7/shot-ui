@@ -1,0 +1,22 @@
+<div id="add_patient_modal" class="modal fade" role="dialog" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Add New Patient</h5>
+      </div>
+      <div class="modal-body">
+        <div *ngIf='!showAddButtons && !addedPatient.active' class='error-text'>The following patient has been added and is INACTIVE.<br>You will not be able to order products for this patient.<br></div>
+        <app-add-patient #app_add_patient (onAddSuccessForParent)='handleOnAddSuccess($event)'></app-add-patient>
+      </div>
+      <div class="modal-footer" *ngIf='showAddButtons'>
+        <button type="button" class="btn btn-link" data-dismiss="modal" #cancelBtn (click)="onCancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Add Patient</button>
+      </div>
+      <div class="modal-footer" *ngIf='!showAddButtons'>
+        <button type="button" class="btn btn-link" data-dismiss="modal" #cancelBtn (click)="onCancel()" *ngIf='addedPatient.active'>Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" #cancelBtn (click)="onCancel()" *ngIf='!addedPatient.active'>Close</button>
+        <button type="button" class="btn btn-primary" (click)="onOrderForThisPatient()" *ngIf='addedPatient.active'>Order for this patient</button>
+      </div>
+    </div>
+  </div>
+</div>

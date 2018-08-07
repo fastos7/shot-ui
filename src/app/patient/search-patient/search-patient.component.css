@@ -1,0 +1,32 @@
+:host /deep/ .match {
+    color: #009661;
+    font-weight: bold;
+  }
+  
+.completer-limit /deep/ .completer-dropdown {
+    max-height: 20rem;
+    max-width: 100rem;
+    box-shadow: 3px 3px 3px #CCC;
+}
+
+:host /deep/ .completer-description {
+    font-style: italic;
+    font-size: 12px;
+}
+
+:host /deep/ .completer-title {
+    font-size: 14px;
+}
+
+:host /deep/ .completer-input {
+    width: 100%;
+}
+
+/deep/ .completer-dropdown {    
+    overflow-y: auto;
+    overflow-x: hidden; 
+}
+
+:host /deep/ .completer-dropdown-holder div {
+    width: 100%;    
+}

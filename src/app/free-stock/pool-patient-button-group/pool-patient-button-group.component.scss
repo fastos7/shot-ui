@@ -1,0 +1,23 @@
+@import "../../../assets/scss/_variables";
+
+.btn {
+    font-size: 11px;
+    border-radius: .2rem;
+    line-height: 0.5;
+}
+.btn-primary{
+    background-color: #80bdff;
+    color: $btnPrimTxtColor;
+    border-color: #80bdff;
+    cursor:pointer;
+}
+.btn-primary:not([disabled]):not(.disabled):active, .btn-primary:not([disabled]):not(.disabled).active,.btn-primary:hover{
+    background-color: $shBlue;
+    color: $btnPrimTxtColor;
+    border-color: $shBlue;
+}
+.btn-primary.disabled, .btn-primary:disabled{
+    background-color: $btnPrimDisabledBgColor;
+    color: $btnPrimDisabledTxtColor;
+    border-color: $btnPrimDisabledBgColor;
+}

@@ -1,0 +1,7 @@
+<div class="week-view-batches">
+  <div class="week-view-batch-container" *ngFor="let batch of batchArray; let i = index" (click)="showBatchDetails(batch)" role="button">
+    <div class="week-view-batch {{batch.status}}">
+      <span [innerHTML]='batch | formatDisplayProductDescription'></span> in {{batch.deliveryMechanismDescription}}
+    </div>
+  </div>
+</div>

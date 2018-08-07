@@ -1,0 +1,42 @@
+:host /deep/ .match {
+    color: darkgreen;
+    font-weight: bold;
+  }
+  
+.completer-limit /deep/ .completer-dropdown {
+    max-height: 20rem;
+    max-width: 100rem;
+}
+
+:host /deep/ .completer-description {
+    font-style: italic;
+    font-size: 12px;
+}
+
+:host /deep/ .completer-title {
+    font-size: 14px;
+}
+
+:host /deep/ .completer-input {
+    width: 100%;
+}
+.form-control {
+    padding: 0.2em .75rem;
+    font-size:13px;
+}
+
+.text-med {
+    font-size:14px;
+}
+
+.text-lg {
+    font-size:16px;
+}
+
+label {
+    font-weight: bold;
+}
+
+.btn-block {
+    width: 40%;
+}

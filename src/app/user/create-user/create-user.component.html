@@ -1,0 +1,137 @@
+<div class=row>
+    <div class=col>
+        <form name="addUserForm" class="form-group" [formGroup]="addEditUserForm" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <div class=row>
+                    <div class="col pb-3">
+                        Please enter all of the criteria below to add a new user into the system
+                        <br><br>
+                        <alert></alert>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class=form-field>
+                            <label for=firstName>First Name:</label>
+                            <input type="text" id="firstName" name="firstName" formControlName="firstName" placeholder="First Name" class="form-control"
+                                [ngClass]="{' ng-touched ng-invalid': !validateRequiredFields('firstName')}">
+                            <div *ngIf="!validateRequiredFields('firstName')" class="error-block">
+                                <span>First Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class=form-field>
+                            <label for=lastName>Last Name:</label>
+                            <input type="text" id=lastName name=lastName formControlName="lastName" placeholder="Last Name" class="form-control" [ngClass]="{' ng-touched ng-invalid': !validateRequiredFields('lastName')}">
+                            <div *ngIf="!validateRequiredFields('lastName')" class="error-block">
+                                <span>Last Name is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class=form-field>
+                            <label for=email>Email:</label>
+                            <input *ngIf="user == null" type="text" id=email name=email formControlName="email" placeholder="Email" class="form-control"
+                                [ngClass]="{' ng-touched ng-invalid': !validateRequiredFields('email')}">
+                            <input *ngIf="user != null" type="text" id=email name=email formControlName="email" placeholder="Email" class="form-control"
+                                [ngClass]="{' ng-touched ng-invalid': !validateRequiredFields('email')}" disabled>
+                            <div *ngIf="!validateRequiredFields('email')" class="error-block">
+                                <span>{{getEmailValidationMessage()}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="user == null">
+                    <div class="col-3">
+                        <div class=form-field>
+                            <label for=password>Password:</label>
+                            <input type="password" id=password name=password formControlName="password" placeholder="Password" maxlength="64" class="form-control" [ngClass]="{' ng-touched ng-invalid': !validatePassword()}">
+                            <div *ngIf="pwdErrMsg" class="error-block">
+                                <span>{{pwdErrMsg}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="user == null">
+                    <div class="col-3">
+                        <div class=form-field>
+                            <label for=confirmPassword>Confirm Password:</label>
+                            <input type="password" id=confirmPassword name=confirmPassword formControlName="confirmPassword" placeholder="Confirm Password" maxlength="64" 
+                                class="form-control" [ngClass]="{' ng-touched ng-invalid': !validateRequiredFields('confirmPassword')}">
+                            <div *ngIf="!validateRequiredFields('confirmPassword')" class="error-block">
+                                <span>Confirm Password is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="isLoginUserSladeAdmin">
+                    <div class="col-3">
+                        <div class=form-field>
+                            <label for=status>Status:</label>
+                            <select id=status name=status formControlName="status" class="form-control" [ngClass]="{' ng-touched ng-invalid': !validateRequiredFields('status')}">
+                                <option value="">Select a Status</option>
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                            <div *ngIf="!validateRequiredFields('status')" class="error-block">
+                                <span>Status is required</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="isLoginUserSladeAdmin">
+                    <div class="col-3">
+                        <div class=form-field>
+                            <ng-container *ngIf="editingSladeAdmin; then editingSladeAdminTemplate; else notEditingSladeAdminTemplate"></ng-container>
+                            <ng-template #editingSladeAdminTemplate>
+                                <input type="checkbox" name=isSladeAdmin id=isSladeAdmin formControlName="isSladeAdmin" [(ngModel)]="isSladeAdmin" (change)="sladeAdminChecked()" class="form-check-input" disabled>
+                            </ng-template>
+                            <ng-template #notEditingSladeAdminTemplate>
+                                <input type="checkbox" name=isSladeAdmin id=isSladeAdmin formControlName="isSladeAdmin" [(ngModel)]="isSladeAdmin" (change)="sladeAdminChecked()" class="form-check-input">
+                            </ng-template>
+                            <label for=isSladeAdmin class="pl-3">Is Slade Admin</label>
+                        </div>
+                    </div>
+                </div>
+                <ng-template [ngIf]="sites != null && roles != null">
+                    <div class=row>
+                        <div class="col-9">
+                            <div class=row>
+                                <div class="col-6 text-right">
+                                    <label>{{isSladeAdmin? 'Default Site':'Sites and Roles'}}:</label>
+                                </div>
+                            </div>
+                            <ng-template ngFor let-userSite let-i="index" [ngForOf]="userSites">
+                                <div class="row">
+                                    <div class="col site-main-container">
+                                        <app-add-user-site [userSite]="userSite" [sites]="sites" [roles]="roles" [user]="user" [index]="i" [isSladeAdmin]="isSladeAdmin"
+                                            (default)='changeDefaultSite($event)' (remove)='removeSite($event)'>
+                                        </app-add-user-site>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="canAddMoreSites() && !isSladeAdmin">
+                        <div class="col-6">
+                            <a class="btn btn-link" href="javascript:void(0);" (click)='addUserSite()'>Add another site</a>
+                        </div>
+                    </div>
+                </ng-template>
+                <div class="row pt-2">
+                    <div class="col-3 text-right">
+                        <a class="btn btn-link" href="javascript:void(0);" (click)='onCancel()'>Cancel</a>
+                    </div>
+                    <div class=col>
+                        <button class="btn btn-primary" type="submit">{{user == null? 'Add User':'Save User'}}</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

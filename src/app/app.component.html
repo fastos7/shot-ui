@@ -1,0 +1,20 @@
+<app-header></app-header>
+<!-- main app container -->
+<div style="min-height: 824px;">
+    <div class="px-5" > 
+        <div >
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
+
+    <ngx-loading [show]="loading" [config]="{ animationType: 'circleSwish', 
+                                              backdropBackgroundColour: 'rgba(0,0,0,0.3)', 
+                                              backdropBorderRadius: '10px',
+                                              primaryColour: '#005BBB', 
+                                              secondaryColour: '#005BBB', 
+                                              tertiaryColour: '#005BBB',
+                                              fullScreenBackdrop : true }">
+    </ngx-loading>
+    

@@ -1,0 +1,7 @@
+<mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedTab" (selectedTabChange)="tabClicked($event)">
+  <mat-tab label="Search Patients">
+    <app-search-patient-multiple></app-search-patient-multiple>
+  </mat-tab>
+  <mat-tab label="Add New Patient"><app-add-patient></app-add-patient></mat-tab>
+  <mat-tab label="Bulk Add Patients"><app-upload-patients></app-upload-patients></mat-tab>
+</mat-tab-group>

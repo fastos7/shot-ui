@@ -1,0 +1,442 @@
+<div class="row">  
+    <div class="col-8">
+        <h4>Update Batch Details</h4> 
+    </div>  
+</div>
+
+<!-- Begin Edit Batch Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="row mt-2 mb-2">
+            <div class="col text-left pt-1">
+                <mat-slide-toggle                        
+                    [color]="'primary'"
+                    [(ngModel)]="isMultiDrug"                        
+                    [disabled]="false"
+                    (change)="OnToggleMultiDrug()">
+                    Multi-Drug                    
+                </mat-slide-toggle>
+            </div>
+            <div class="col text-right" *ngIf="!isMultiDrug && !isSelectedProductFormulation()">
+                <button class="btn btn-info btn-link" 
+                        type="button"
+                        (click)="completeFromPreferences()"
+                        id="CompleteFromPreferencesBtn">
+                Complete product details from preferences
+                </button>
+            </div>
+        </div>
+        <alert [id]="'displayBatchAlertTop'"></alert>
+        <!-- Begin Form -->           
+        <form class="form-horizontal" 
+                role="form"
+                [formGroup]="displayEditBatchForm"
+                novalidate>
+    
+            <div class="form-horizontal" *ngIf="batch">                
+                <div class="row p-2">
+                    <div class="col">
+                        <label for="">Purchase Order Number :</label>                          
+                    </div> 
+                    <div class="col">                            
+                        <div>
+                            {{shotBatch.ordNo ? shotBatch.ordNo :''}}
+                        </div>                  
+                    </div>   
+                    <div class="col">                          
+                        <label>Batch No / Expiry Date:</label>                          
+                    </div>
+                    <div class="col">                                                  
+                    <div>
+                        {{batch.batchId + (batch.expiryDate ? (' / ' + batch.expiryDate) :'')}} 
+                    </div>                  
+                    </div>
+                </div>
+            </div> 
+            <div class="form-group" *ngIf="batch && batch.status">                                    
+                <div class="row p-2">
+                    <div class="col-3">                          
+                        <label for="comments">Status:</label>                            
+                    </div>   
+                    <div class="col-3">                                                      
+                        <div class="pl-2" [ngClass]="batch.status">
+                            {{batch.status}}
+                        </div>                    
+                    </div>  
+                    <div class="col-3" *ngIf="batch.status && batch.status == 'On Hold'">                                                      
+                        <button class="btn btn-info btn-link" 
+                                    type="button"
+                                    (click)="takeOffHold()"
+                                    id="TakeOffHoldBtn">
+                            Take Off Hold
+                        </button>
+                    </div>           
+                </div>         
+            </div>           
+            <hr/>
+            <div class="form-group" *ngIf="!isMultiDrug">                
+                <div class="row">
+                    <div class="col">
+                        <label for="">Product:</label>
+                        <app-search-product [userAuthorities]="userAuthorities"
+                                            [mode]="'None-MultiDrug'" 
+                                            [searchProductStr]="product ? product.productDescription : ''"                                             
+                                            (selectedProduct)="handleSelectedProduct($event)"
+                                            [productSearchId]="'DisplayBatchComponentProductSearch'">
+                        </app-search-product>                 
+                        <div *ngIf="formErrors.product" class="help error-block">{{formErrors.product}}</div>
+                        
+                    </div>    
+                    <div class="col" *ngIf="!isSelectedProductFormulation()">
+                        <label for="dose">Dose:</label>
+                        <input class="form-control mr-2 dose-size" 
+                            id="dose"                                  
+                            type="number" 
+                            formControlName="dose" 
+                            name="dose">{{product?.unitOfMeasure}}  
+                        <div *ngIf="formErrors.dose" class="help error-block">{{formErrors.dose}}</div>                          
+                    </div>                      
+                </div>
+            </div> 
+            
+            <!-- Begin Multi Drugs -->
+            <div class="form-group" *ngIf="isMultiDrug">                
+                <div class="row">
+                    <div class="col">
+                        <label for="">Product:</label>
+                        <app-search-product [userAuthorities]="userAuthorities"
+                                            [mode]="'MultiDrug'" 
+                                            [searchProductStr]="product ? product.productDescription : ''"                                             
+                                            (selectedProduct)="handleSelectedProduct($event)"
+                                            [productSearchId]="'DisplayBatchComponentProductSearch'"
+                                            #app_search_product>
+                        </app-search-product>                 
+                        <div *ngIf="formErrors.product" class="help error-block">{{formErrors.product}}</div>                          
+                    </div>                                                
+                </div>
+            </div> 
+            <div class="form-group" *ngIf="isMultiDrug && product?.batDrugKey">                
+                <div class="row">
+                    <div class="col">                            
+                        <div class="row">
+                            <div class="col pt-2 pr-0">
+                                <span>{{product?.genericDrugDescription ? product?.genericDrugDescription : ''}}</span>
+                            </div>
+                            <div class="col-2 pt-2 pl-0 pr-0 text-right">
+                                <label for="dose2">Dose : </label>
+                            </div>
+                            <div class="col">                            
+                                <input class="form-control mr-2" 
+                                        id="dose" 
+                                        style="width: 70%;display: inline;" 
+                                        type="number" 
+                                        formControlName="dose" 
+                                        name="dose2">{{product?.unitOfMeasure}}  
+                                <div *ngIf="formErrors.dose" class="help error-block">{{formErrors.dose}}</div>                          
+                            </div>                      
+                        </div>
+                    </div>       
+                    <div class="col"></div>                      
+                </div>
+            </div> 
+    
+            <div class="form-group" *ngIf="isMultiDrug  && product?.batDrugKey2">                
+                <div class="row">
+                    <div class="col">                            
+                        <div class="row">
+                            <div class="col pt-2 pr-0">
+                                <span>{{product?.genericDrugDescription2 ? product?.genericDrugDescription2 : ''}}</span>
+                            </div>
+                            <div class="col-2 pt-2 pl-0 pr-0 text-right">
+                                <label for="dose2">Dose : </label>
+                            </div>
+                            <div class="col">                            
+                                <input class="form-control mr-2" 
+                                        id="dose2" 
+                                        style="width: 70%;display: inline;" 
+                                        type="number" 
+                                        formControlName="dose2" 
+                                        name="dose2">{{product?.unitOfMeasure2}}  
+                                <div *ngIf="formErrors.dose2" class="help error-block">{{formErrors.dose2}}</div>                          
+                            </div> 
+                        </div>
+                    </div>    
+                    <div class="col"></div>                      
+                </div>
+            </div>
+    
+            <div class="form-group" *ngIf="isMultiDrug  && product?.batDrugKey3">                
+                <div class="row">
+                    <div class="col">                            
+                        <div class="row">
+                            <div class="col pt-2 pr-0">
+                                <span>{{product?.genericDrugDescription3 ? product?.genericDrugDescription3 : ''}}</span>
+                            </div>
+                            <div class="col-2 pt-2 pl-0 pr-0 text-right">
+                                <label for="dose3">Dose : </label>
+                            </div>
+                            <div class="col">                            
+                                <input class="form-control mr-2" 
+                                        id="dose3" 
+                                        style="width: 70%;display: inline;" 
+                                        type="number" 
+                                        formControlName="dose3" 
+                                        name="dose3">{{product?.unitOfMeasure3}}  
+                                <div *ngIf="formErrors.dose3" class="help error-block">{{formErrors.dose3}}</div>                          
+                            </div> 
+                        </div>
+                    </div>     
+                    <div class="col"></div>                      
+                </div>
+            </div>
+            <!-- End Multi Drugs -->
+            
+            <app-product-attributes *ngIf="!isSelectedProductFormulation()"
+                                    [form]="displayEditBatchForm"
+                                    [formErrors]="formErrors"  
+                                    [showRemovedClosedSystem]="true"                                      
+                                    [product]="product"
+                                    (selectedDeliveryMechanism)="handleSelectedDeliveryMechanism($event)"
+                                    (selectedAdministrationRoute)="handleSelectedAdministrationRoute($event)"
+                                    #app_product_attributes>
+            </app-product-attributes>
+    
+            <div class="form-group" *ngIf="!isSelectedProductFormulation()">                
+                <div class="row">
+                    <div class="col">
+                        <label for="volume">Volume:</label>
+                        <div class="row">
+                        <div class="col">    
+                            <input class="form-control mr-2 volume-size" id="volume" type="number" formControlName="volume" name="volume">mL
+                            <div *ngIf="formErrors.volume" class="help error-block">{{formErrors.volume}}</div>
+                        </div>  
+                        <div class="col pt-2">    
+                            <input type="checkbox" class="mr-2" formControlName="exact" name="exact" id="exact">Exact
+                        </div>  
+                        </div>                                                
+                    </div>    
+                    <div class="col">
+                        <label for="volume">Infusion Duration:</label>
+                        <input class="form-control mr-2 infusionDuration-size" id="infusionDuration" type="number" formControlName="infusionDuration" name="infusionDuration">hours
+                        <div *ngIf="formErrors.infusionDuration" class="help error-block">{{formErrors.infusionDuration}}</div>
+                    </div>
+                </div>
+            </div> 
+    
+            <div class="form-group mb-0">                
+                <div class="row">
+                    <div class="col">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" 
+                            class="form-control" 
+                            id="quantity" 
+                            formControlName="quantity" 
+                            name="quantity"
+                            (change)="OnQuantityChanged($event)"/>                                                
+                        <div *ngIf="formErrors.quantity" class="help error-block">{{formErrors.quantity}}</div>
+                    </div>    
+                    <div class="col">                          
+                        <app-display-delivery-locations 
+                            [customerKey]="customerKey"
+                            [form]="displayEditBatchForm" 
+                            [name]="'deliveryLocation'">
+                        </app-display-delivery-locations>
+                        <div *ngIf="formErrors.comments" class="help error-block">{{formErrors.comments}}</div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="form-group mb-0">                
+                <div class="row">
+                    <div class="col">
+                        <app-display-delivery-datetimes
+                            [customerKey]="customerKey"
+                            [product]="product"
+                            [quantity]="0"
+                            [form]="displayEditBatchForm" 
+                            [name]="'deliveryDateTime'"
+                            (selectedDeliveryDateTime)="handleSelectedDeliveryDateTime($event)"
+                            #app_display_delivery_datetimes>
+                        </app-display-delivery-datetimes>
+                    </div>    
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">   
+                                <label for="quantity">Treatment Date / Time:</label>                                                      
+                                <div class="row">                                            
+                                    <div class="col">                                            
+                                        <input type=text 
+                                                matInput 
+                                                [matDatepicker]="picker" 
+                                                [min]="minimumDate" 
+                                                formControlName="treatmentDate" 
+                                                class="form-control"
+                                                (dateChange)="changeTreatmentDateEvent($event)"/>
+                                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                        <mat-datepicker #picker disabled="false"></mat-datepicker>
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-control" 
+                                                id="treamentTimeHour" 
+                                                formControlName="treamentTimeHour" 
+                                                name="treamentTimeHour"
+                                                #treamentTimeHour>
+                                            <option value="00">00</option>                                                                                                                    
+                                            <option value="01">01</option>                                        
+                                            <option value="02">02</option>
+                                            <option value="03">03</option>
+                                            <option value="04">04</option>
+                                            <option value="05">05</option>
+                                            <option value="06">06</option>
+                                            <option value="07">07</option>
+                                            <option value="08">08</option>
+                                            <option value="09">09</option>
+                                            <option value="10">10</option>
+                                            <option value="11">11</option>
+                                            <option value="12">12</option>
+                                            <option value="13">13</option>                                        
+                                            <option value="14">14</option>
+                                            <option value="15">15</option>
+                                            <option value="16">16</option>
+                                            <option value="17">17</option>
+                                            <option value="18">18</option>
+                                            <option value="19">19</option>
+                                            <option value="20">20</option>
+                                            <option value="21">21</option>
+                                            <option value="22">22</option>
+                                            <option value="23">23</option>                                                
+                                        </select>                                             
+                                    </div>
+                                    <div class="col-3">
+                                        <select class="form-control" 
+                                                id="treamentTimeMinute" 
+                                                formControlName="treamentTimeMinute" 
+                                                name="treamentTimeMinute">
+                                            <option value="00">00</option>                                        
+                                            <option value="05">05</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                            <option value="25">25</option>
+                                            <option value="30">30</option>
+                                            <option value="35">35</option>
+                                            <option value="40">40</option>
+                                            <option value="45">45</option>
+                                            <option value="50">50</option>
+                                            <option value="55">55</option>
+                                        </select>                                             
+                                    </div>                                            
+                                </div>                                                                                                             
+                            </div>                                                                   
+                        </div>    
+                        <div class="row" *ngIf="formErrors.treamentTimeHour || formErrors.treamentTimeMinute">                                
+                            <div class="col offset-md-6" >
+                                <p class="error-block">{{formErrors.treamentTimeHour ? formErrors.treamentTimeHour : formErrors.treamentTimeMinute}}</p>                                    
+                            </div>
+                        </div>    
+                        <div class="row">                                
+                            <div class="col">
+                                <p class="font-italic">Providing the treatment date and time helps us ensure short shelf life products do not expire before administration.</p>
+                            </div>
+                        </div>    
+                    </div>                     
+                </div>                      
+            </div>
+    
+            <div class="form-group">                                    
+                <div class="row">                
+                    <div class="col">                          
+                        <label for="comments">Comments:</label>
+                        <textarea class="form-control" rows="3" id="comments" formControlName="comments" name="comments"></textarea>
+                        <div *ngIf="formErrors.comments" class="help error-block">{{formErrors.comments}}</div>
+                    </div>           
+                </div>         
+            </div>   
+            <alert [id]="'displayBatchErrorAlert'"></alert>    
+        </form>
+        <!-- End Form -->    
+    </div>           
+</div>
+<!-- Begin Batch History -->
+<div class="row pb-4">        
+    <div class="col-12">
+        <app-batch-history [batchId]="shotBatch.shotBatchId"
+                           #app_batch_history>
+        </app-batch-history>        
+    </div>    
+</div>  
+<!-- End Batch History -->
+<div class="row pb-4">        
+    <div class="col-12">
+        <button type="button" class="btn btn-link" id="DiscardChangesBtn" (click)="discardChanges()">Discard Changes</button>
+        <button type="button" class="btn btn-link" id="CancelBatchBtn" (click)="cancelBatch()">Cancel Batch</button>
+        <button type="button" class="btn btn-primary"  id="submitBtn" (click)="onSaveChanges()">SAVE CHANGES</button>
+    </div>    
+</div>   
+<!-- End Edit Batch Section -->
+
+
+<ng-template #cancelBatchModal>
+    <div class="modal-header">
+        <h5>Cancel Batch</h5>        
+    </div>
+    <div class="modal-body">
+        Are you sure you want to cancel this batch?        
+    </div>
+    <div class="modal-footer">        
+        <button type="button" class="btn btn-link" id="NoBtn" (click)="confirmCancelBatchModalRef.hide()">NO</button>        
+        <button type="button" class="btn btn-primary" id="YesBtn" (click)="confirmCancelBatch()">YES</button>
+    </div>  
+</ng-template>
+
+<ng-template #discardChangesBatchModal>
+    <div class="modal-header">
+        <h5>Discard Changes</h5>        
+    </div>
+    <div class="modal-body">
+        Are you sure you want to discard changes made on this batch?        
+    </div>
+    <div class="modal-footer">        
+        <button type="button" class="btn btn-link" id="NoBtn" (click)="confirmdiscardChangesBatchModalRef.hide()">NO</button>        
+        <button type="button" class="btn btn-primary" id="YesBtn" (click)="confirmDiscardChangesBatch()">YES</button>
+    </div>  
+</ng-template>
+
+<ng-template #continueUpdateBatchModal>
+    <div class="modal-header">
+        <h5>Batch Successfully saved.</h5>        
+    </div>
+    <div class="modal-body">
+        Do you want to continue making changes to this batch? Clicking <b>NO</b> and you will be navigated to My Orders page.
+    </div>
+    <div class="modal-footer">        
+        <button type="button" class="btn btn-link" id="NoBtn" (click)="confirmdiscardChangesBatchModalRef.hide()">NO</button>        
+        <button type="button" class="btn btn-primary" id="YesBtn" (click)="confirmDiscardChangesBatch()">YES</button>
+    </div>  
+</ng-template>
+
+<ng-template #successfullBatchCancellationModal>
+    <div class="modal-header">
+        <h5>Batch Successfully cancelled.</h5>        
+    </div>
+    <div class="modal-body">
+        You will be navigated back to My Orders screen
+    </div>
+    <div class="modal-footer">                
+        <button type="button" class="btn btn-primary" id="YesBtn" (click)="confirmSuccessfullBatchCancellation()">OK</button>
+    </div>  
+</ng-template>
+
+<ng-template #confirmTakeOffHoldModal>
+    <div class="modal-header">
+        <h5>Off Hold batch.</h5>        
+    </div>
+    <div class="modal-body">
+        Are you sure you want to off hold this batch? Any changes you made on this batch will be lost. If you want to make changes 
+        you can do so after the batch is taken off hold.
+    </div>
+    <div class="modal-footer">                
+        <button type="button" class="btn btn-link" id="NoBtn" (click)="confirmTakeOffHoldModalRef.hide()">NO</button>        
+        <button type="button" class="btn btn-primary" id="YesBtn" (click)="confirmTakeOffHoldBatch()">YES</button>
+    </div>  
+</ng-template>

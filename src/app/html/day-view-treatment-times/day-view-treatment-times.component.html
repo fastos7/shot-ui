@@ -1,0 +1,96 @@
+<!--div class=row>
+    <div class="col"><h4>My Orders</h4></div>
+    <div class="col-3 view-order-hdr-links"><a href=# class="btn btn-link pull-right">New Order</a><a href=# class="btn btn-link pull-right">Find/Edit Order</a></div>
+</div>
+<div class=row>
+  <div class=col>
+    <a class="btn btn-my-orders-header active" href=#>Delivery times</a>
+    <div class="btn btn-my-orders-header inactive">Treatment times</div>
+  </div>
+  <div class=col-5>
+    <a class="btn btn-my-orders-header active" href=#><</a>
+    <div class="btn btn-my-orders-header inactive">Mon, 20-Nov-2017</div>
+    <a class="btn btn-my-orders-header active" href=#>></a>
+  </div>
+  <div class=col-2>
+    <a class="btn btn-my-orders-header active pull-right" href=#>Week</a>
+    <div class="btn btn-my-orders-header inactive pull-right">Day</div>
+  </div>
+</div>
+<div class=row>
+  <div class="col">
+    <div class=section-header><span class=section-header-title>Oncology</span></div>
+  </div>
+</div>
+<div class=row>
+  <div class="col-1">
+    <div class=sub-section-header><span class=sub-section-header-title>8:00 AM</span></div>
+  </div>
+</div>
+<div class=row>
+  <div class="col-12 pl-4 pt-2">
+    <div class="patient-card clearfix">
+      <div class="patient-header clearfix">
+        <div class=patient-detail-container>
+          <span class=patient-det-lbl>MURPHY, ELIZABETH</span>
+        </div>
+        <div class=patient-detail-container>
+          <span class=patient-det-lbl>Date Of Birth :</span>
+          <span class=patient-det-data>17/12/2017</span>
+        </div>
+        <div class=patient-detail-container>
+            <span class=patient-det-lbl>MRN / UR :</span>
+            <span class=patient-det-data>12345678</span>
+        </div>
+      </div>
+      <div class="mat-elevation-z8">
+          <mat-table #table [dataSource]="dataSource">
+        
+            <ng-container matColumnDef="Product Description">
+              <mat-header-cell *matHeaderCellDef [ngClass]="'pd-cell'"> Product Description </mat-header-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="'pd-cell'"> {{element.productName}} {{element.dose}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="Diluent / Container">
+              <mat-header-cell *matHeaderCellDef [ngClass]="'dm-cell'"> Diluent / Container </mat-header-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="'dm-cell'"> {{element.delMechanism}}{{element.removeClosedSystem?', No Closed System':''}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="Volume">
+              <mat-header-cell *matHeaderCellDef [ngClass]="'vol-cell'"> Volume </mat-header-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="'vol-cell'"> {{element.volume}}{{element.exact?' Exact':''}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="RoA">
+              <mat-header-cell *matHeaderCellDef [ngClass]="'roa-cell'"> RoA </mat-header-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="'roa-cell'"> {{element.route!==null?element.route:'-'}} </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="Infusion Duration">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'inf-cell'"> Infusion Duration </mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'inf-cell'"> {{element.infDuration!=null?element.infDuration:'-'}} </mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="Batch#, Expiry Date">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'bat-exp-cell'"> Batch#, Expiry Date </mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'bat-exp-cell'"> {{element.batchId!==null?element.batchId:'-'}}, {{element.expiryDate!==null?element.expiryDate:'-'}} </mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="Price">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'price-cell'"> Price </mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'price-cell'"> {{element.price!==null?element.price:'-'}} </mat-cell>
+            </ng-container>
+      
+            <ng-container matColumnDef="Status">
+                <mat-header-cell *matHeaderCellDef [ngClass]="'status-cell'"> Status </mat-header-cell>
+                <mat-cell *matCellDef="let element" [ngClass]="'status-cell'"> {{element.status!==null?element.status:'-'}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;let element" class="{{element.status}} mat-row"></mat-row>
+          </mat-table>
+        
+        </div>
+    </div>
+  </div>
+</div-->

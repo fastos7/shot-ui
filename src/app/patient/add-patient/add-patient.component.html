@@ -1,0 +1,124 @@
+<h6 class="pt-3" *ngIf='!isAddModeModal'>Add New Patient</h6>
+<div class=row>
+  <div class=col-12>
+    <alert id=addPatientAlert></alert>
+  </div>
+</div>
+<div class="row pb-3">
+  <div class=col-12>
+    <div class="bodyText">
+      {{displayMessage}}
+    </div>
+  </div>
+</div>
+<div class=row *ngIf='addView==="ADD"'>
+  <div class=col>
+    <form class=form-group role="form" [formGroup]="addPatientForm" novalidate>
+      <fieldset>
+        <div class=row *ngIf="!isValid">
+          <div class="col error-block pb-3">
+            In order to add a new patient please specify at least one out of First Name, Surname and MRN / UR.
+          </div>
+        </div>
+      <div class="row">
+          <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}">
+            <div class="form-field"> 
+              <label for="addPatSurName">Surname :</label>                    
+              <input type="text" class="form-control" formControlName="addPatSurName" name="addPatSurName" id="addPatSurName" placeholder="Surname" [ngClass]="{' ng-touched ng-invalid' : !isValid}" (keyup)='inputKeyUpHandler($event)'>
+              <div *ngIf="formErrors.addPatSurName" class="help error-block">{{formErrors.addPatSurName}}</div>
+            </div> 
+          </div>
+        </div>
+        <div class=row>
+          <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}">
+            <div class="form-field"> 
+              <label for="addPatFirstName">First Name :</label>                    
+              <input type="text" class="form-control" formControlName="addPatFirstName" name="addPatFirstName" id="addPatFirstName" placeholder="First Name" [ngClass]="{' ng-touched ng-invalid' : !isValid}" (keyup)='inputKeyUpHandler($event)'>
+              <div *ngIf="formErrors.addPatFirstName" class="help error-block">{{formErrors.addPatFirstName}}</div>
+            </div> 
+          </div>
+        </div>
+        <div class=row>
+          <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}">
+            <div class="form-field"> 
+              <label for="addPatUr">MRN / UR :</label>                    
+              <input type="text" class="form-control" formControlName="addPatUr" name="addPatUr" id="addPatUr" placeholder="MRN / UR" [ngClass]="{' ng-touched ng-invalid' : !isValid}" [attr.maxlength]="20" (keyup)='inputKeyUpHandler($event)'>
+              <div *ngIf="formErrors.addPatUr" class="help error-block">{{formErrors.addPatUr}}</div>
+            </div> 
+          </div>
+        </div>
+        <div class=row>
+          <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}">
+            <div class="form-field"> 
+              <label for="addPatDob">Date Of Birth :</label>                    
+              <input type=text matInput [matDatepicker]="picker" [max]="maximumDate" name="addPatDob" formControlName="addPatDob" id="addPatDob" class="form-control add-pat-dob"/>
+              <mat-datepicker-toggle matSuffix [for]="picker" class="add-pat-dob-toggle"></mat-datepicker-toggle>
+              <mat-datepicker #picker disabled="false"></mat-datepicker>
+            </div> 
+          </div>
+        </div>
+        <div class=row>
+          <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}">
+            <div class="form-field"> 
+              <label for="addPatStatus">Status :</label>                    
+              <select class="form-control" formControlName="addPatStatus" name="addPatStatus" id="addPatStatus">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+              </select>
+              <div *ngIf="formErrors.addPatStatus" class="help error-block">{{formErrors.addPatStatus}}</div>
+            </div> 
+          </div>
+        </div>
+        <div class=row>
+          <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}">
+            <div class="form-field"> 
+              <label for="addPatTrialID">Trial ID :</label>                    
+              <input type="text" class="form-control" formControlName="addPatTrialID" name="addPatTrialID" id="addPatTrialID" placeholder="Trial ID" [attr.maxlength]="20">
+              <div *ngIf="formErrors.addPatTrialID" class="help error-block">{{formErrors.addPatTrialID}}</div>
+            </div> 
+          </div>
+        </div>
+        <div class=row *ngIf='!isAddModeModal'>
+          <div class=col>
+            <button type="button" class="btn btn-link" (click)="gotoSearch()">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="onSubmit()">Add</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>
+<div class=row *ngIf='addView==="ADD_SUCCESS"'>
+  <div class=col>
+    <div class="row pb-2">
+      <div [ngClass]="{'col-2' : !isAddModeModal, 'col-4': isAddModeModal}" class=" lblText">SurName :</div>                    
+      <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}" class=" valueText">{{addedPatients[0].surName!==null && addedPatients[0].surName!==''?addedPatients[0].surName:'-'}}</div>
+    </div>
+    <div class="row pb-2">
+      <div [ngClass]="{'col-2' : !isAddModeModal, 'col-4': isAddModeModal}" class=" lblText">First Name :</div>                    
+      <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}" class=" valueText">{{addedPatients[0].firstName!==null && addedPatients[0].firstName!==''?addedPatients[0].firstName:'-'}}</div>
+    </div>
+    <div class="row pb-2">
+      <div [ngClass]="{'col-2' : !isAddModeModal, 'col-4': isAddModeModal}" class=" lblText">MRN / UR :</div>                    
+      <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}" class=" valueText">{{addedPatients[0].ur!==null && addedPatients[0].ur!==''?addedPatients[0].ur:'-'}}</div>
+    </div>
+    <div class="row pb-2">
+      <div [ngClass]="{'col-2' : !isAddModeModal, 'col-4': isAddModeModal}" class=" lblText">Date Of Birth :</div>                    
+      <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}" class=" valueText">{{addedPatients[0].dob!==null?addedPatients[0].dob:'-'}}</div>
+    </div>
+    <div class="row pb-2">
+        <div [ngClass]="{'col-2' : !isAddModeModal, 'col-4': isAddModeModal}" class=" lblText">Status :</div>                    
+        <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}" class=" valueText">{{addedPatients[0].active?'Active':'Inactive'}}</div>
+    </div>
+    <div class="row pb-2">
+        <div [ngClass]="{'col-2' : !isAddModeModal, 'col-4': isAddModeModal}" class=" lblText">Trial ID :</div>                    
+        <div [ngClass]="{'col-3' : !isAddModeModal, 'col-6': isAddModeModal}" class=" valueText">{{addedPatients[0].trialId!==null && addedPatients[0].trialId!==''?addedPatients[0].trialId:'-'}}</div>
+    </div>
+    <div class=row *ngIf='!isAddModeModal'>
+      <div class=col>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#edit_patient_modal" (click)="onEditAfterAdd()">Edit this Patient</button>
+        <button type="button" class="btn btn-primary" (click)="onAddAnother()">Add Another Patient</button>
+      </div>
+    </div>
+  </div>
+</div>

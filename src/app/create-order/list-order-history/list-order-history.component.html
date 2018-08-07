@@ -1,0 +1,71 @@
+<mat-accordion *ngIf="patient && batches && batches.length > 0">
+  <mat-expansion-panel [expanded]="false">
+      <mat-expansion-panel-header class="mat-expansion-indicator-style mat-content-style">
+          <mat-panel-title id="ReorderProductLnk">
+              Reorder a Product
+          </mat-panel-title>                        
+      </mat-expansion-panel-header>    
+    
+      <div class="row text-lg">
+        <div class="col">
+            <p *ngIf="patient && batches && batches.length > 0">
+              <b>Order History {{ patient? ('for ' + patient.fullName) : '(Non-Patient)'}}</b>
+            </p>   
+            <p *ngIf="patient && (!batches || batches.length <= 0)">
+              <b>No order history found for {{ patient? (patient.fullName) : '(Non-Patient)'}}</b>
+            </p> 
+          </div>
+        </div>
+        <div class="row" *ngIf="patient && batches && batches.length > 0">
+          <div class="col">
+              <div class="mat-elevation-z8">
+                        
+                <!-- Begin Material table for listing Non-Patient Orders -->  
+                <mat-table #table [dataSource]="convertToMaterialDatasource(batches)">
+        
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        
+                    <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef class="text-left">Date</mat-header-cell>
+                    <mat-cell *matCellDef="let batch" class="text-left ">{{toDate(batch.createdDate) | date:'dd-MMM-yyyy'}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="productDetails">
+                        <mat-header-cell *matHeaderCellDef class="text-left">Product Details</mat-header-cell>
+                        <mat-cell *matCellDef="let batch" class="text-left">
+                            <b>Product:</b> {{batch.productDesc}} 
+                            <ng-template [ngIf]="batch.doseUnit != null"> {{' '}}{{batch.dose}}{{batch.doseUnit}}</ng-template>
+                            <ng-template [ngIf]="batch.productDesc2 != null">, {{batch.productDesc2}} {{batch.dose2}}{{batch.doseUnit2}}</ng-template>
+                            <ng-template [ngIf]="batch.productDesc3 != null">, {{batch.productDesc3}} {{batch.dose3}}{{batch.doseUnit3}}</ng-template>
+                            {{' in '}} {{batch.deliveryMechanismDesc}} {{!batch.closedSystem? '(no closed system)' : ''}}                            
+                        </mat-cell>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="action">
+                        <mat-header-cell *matHeaderCellDef class="text-left">Action</mat-header-cell>
+                        <mat-cell *matCellDef="let batch" class="text-left">                             
+                            <a href="javascript:void(0);"                             
+                              attr.data-prefId="{{batch.batchId}}"
+                              (click)="reOrderBatch(reorder_button.getAttribute('data-prefId'))"
+                              id="ReorderBtn"
+                              #reorder_button>
+                                Reorder
+                            </a>
+                        </mat-cell>    
+                    </ng-container>
+                    
+                </mat-table>                        
+                <!-- End Material table for listing Non-Patient Orders -->  
+        
+              </div>
+          </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+            <alert [id]="'orderHistoryAlert'"></alert>         
+        </div>
+      </div>            
+  </mat-expansion-panel>                                          
+</mat-accordion>
+

@@ -1,0 +1,30 @@
+<div class=row>
+  <div class="col-12 pl-4 pt-2">
+    <div class="patient-card clearfix">
+      <div class="patient-header clearfix" *ngIf="patData.value[0].patientId !== '-1'">
+        <div class=patient-detail-container [ngClass]="{ ' week-view-patient-detail-container' :  dayOrWeek === 'week'}">
+          <span class=patient-det-lbl>{{patData.value[0].patientLastName | displayFullName : patData.value[0].patientFirstName}}</span>
+        </div>
+        <div class=patient-detail-container *ngIf="dayOrWeek === 'day' && patData.value[0].patientDob">
+          <span class=patient-det-lbl>Date Of Birth :</span>
+          <span class=patient-det-data>{{patData.value[0].patientDob | date : "dd-MM-yyyy"}}</span>
+        </div>
+        <div class=patient-detail-container *ngIf="dayOrWeek === 'day' && patData.value[0].patientUr">
+          <span class=patient-det-lbl>MRN / UR :</span>
+          <span class=patient-det-data>{{patData.value[0].patientUr}}</span>
+        </div>
+        <div class=week-view-patient-detail-container *ngIf="dayOrWeek === 'week' && (patData.value[0].patientDob || patData.value[0].patientUr)">
+          <span class=week-view-patient-det-data *ngIf="patData.value[0].patientDob">{{patData.value[0].patientDob | date : "dd-MM-yyyy"}}</span>
+          <span class=week-view-patient-det-data *ngIf="patData.value[0].patientUr">{{patData.value[0].patientUr}}</span>
+        </div>
+      </div>
+      <div class="patient-header clearfix" *ngIf="patData.value[0].patientId === '-1'">
+          <div class=patient-detail-container>
+            <span class=patient-det-lbl>NO PATIENT NAME</span>
+          </div>
+      </div>
+      <app-display-patient-batches-day-view [batchArray]="patData.value" *ngIf='dayOrWeek === "day"'></app-display-patient-batches-day-view>
+      <app-display-patient-batches-week-view [batchArray]="patData.value" *ngIf='dayOrWeek === "week"'></app-display-patient-batches-week-view>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+/*
+ * Add these class explicitly because its not available to
+ * child components.
+ */
+select.ng-invalid.ng-touched {
+	border: 1px solid #cc0000;
+}

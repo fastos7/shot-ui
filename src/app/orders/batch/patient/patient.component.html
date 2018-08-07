@@ -1,0 +1,109 @@
+<div class=row>
+    <div class="col">
+        <div class=row>
+            <div class=col-12>
+
+                <div class="row text-lg" style="padding-top:2em">
+                    <div class="col">
+                        <p><b>PO Number: </b>&nbsp;&nbsp;&nbsp;{{poNumber}}</p>
+                    </div>
+                </div>
+                <div class="row" style="padding-top:0.5em; padding-bottom:1.0em;">
+                    <div class="col-12">
+                        <span>Please enter a patient name to start ordering.</span><br>
+                        <span>Alternatively you can start an order without a patient name and also add a new patient into our system.</span>
+                    </div>
+                </div>
+               
+                <div class="row" style="padding:1.0em">
+                    <div class="col-8" style="padding:1.0em; border:1px solid #000000">
+                <!-- Patient/Non-Patient Search -->
+                <ng-container *ngIf="showPatientSearch; then searchPTemplate; else listPTemplate"></ng-container>
+                <ng-template #searchPTemplate>
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <label for="patientName">Patient Name / MRN: </label>
+                        </div>
+                        <div class="form-group" style="padding-left: 3.0em">
+                            <ng2-completer  [(ngModel)]="searchPatientStr" [ngModelOptions]="{standalone: true}"
+                                            [datasource]="remoteDataService" 
+                                            [minSearchLength]="3" [matchClass]="'match'"
+                                            [pause]="400" textNoResults="No Patients found"
+                                            textSearching="Searching Patients..."
+                                            placeholder="Patient Name / MRN"
+                                            [inputClass]="'form-control'"
+                                            class="completer-limit" [initialValue]="searchPatientStr"
+                                            (selected)='onPatientSelected($event)'
+                                            #searchPatientComp>
+                            </ng2-completer>
+                        </div>
+                        <div class="form-group" style="padding-left: 3.0em">
+                            <a href="javascript:void(0)" (click)='onNoPatient()'>No Patient</a>
+                        </div>
+                        <div class="form-group" style="padding-left: 3.0em">
+                            <a href="" (click)='onCancelProduct()'>Add Patient</a>
+                        </div>
+                    </form>
+                </ng-template>
+                <ng-template #listPTemplate>
+                    <div class="row">
+                        <div class="col-3">
+                            <label for="patientName">Patient Name: </label>
+                            &nbsp;&nbsp;
+                            {{selectedPatient.fullName}}
+                        </div>
+                        <ng-container *ngIf="!isNoPatient; then isPatientTemplate; else isNoPatientTemplate"></ng-container>
+                        <ng-template #isPatientTemplate>
+                        <div class="col-3">
+                            <label for="mrnNo">MRN Number: </label>
+                            &nbsp;&nbsp;
+                            {{selectedPatient.mrnNo}}
+                        </div>
+                        <div class="col-3">
+                            <label for="dob">Date of Birth: </label>
+                            &nbsp;&nbsp;
+                            {{selectedPatient.dob}}
+                        </div>
+                        <div class="col">
+                            <a href="javascript:void(0);" (click)='onEditPatient()'>Change Patient</a>
+                        </div>
+                        </ng-template>
+                        <ng-template #isNoPatientTemplate>
+                            <div class="col">
+                                <a href="javascript:void(0);" (click)='onShowPatient()'>Select Patient</a>
+                            </div>
+                        </ng-template>
+                    </div>
+                </ng-template>
+                    </div>
+                </div>
+
+                <div class="row" *ngIf="!showPatientSearch">
+                    <div class="col-3" style="padding-top: 0.5rem">
+                        <a href="javascript:void(0);" (click)='onAddProduct()'><b>+</b> Add Product</a>
+                    </div>
+                </div>
+
+                <div class="row" style="padding:1.0em" *ngIf="showAddEditProduct">
+                    <div class="col-8" style="padding:1.0em; border:1px solid #000000">
+                        <!--batch-product [batchOrder]='batchOrder'></batch-product-->
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-3 text-right" style="padding-top: 0.5rem">
+                        <a href="javascript:void(0);" (click)='onCancel()'>Cancel</a>
+                    </div>
+                    <div class="col-4 text-left">
+                        <button class="btn btn-primary btn-block" (click)='onAddtoOrder()'>
+                            Add to Order
+                        </button>
+                    </div>
+                    <div class="col-5">&nbsp;</div>
+                </div>
+                                
+            </div>
+        </div>
+    </div>
+</div>
+

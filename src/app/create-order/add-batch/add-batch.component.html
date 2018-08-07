@@ -1,0 +1,347 @@
+<div class=row [@visibilityChanged]="visibility">
+    <div class="col">
+        <div class="row">
+            <div class="col">
+                <h4>{{title}}</h4>
+            </div>  
+        </div> 
+        <div class=row>
+            <div class=col-12>
+
+                <div class="row text-lg" style="padding-top:2em">
+                    <div class="col-1">
+                        <b>PO Number: </b>
+                    </div>
+                    <div class="col-2 text-left">
+                        {{poNumber}}
+                    </div>
+                </div>
+                <div class="row text-lg">
+                    <div class="col-1">
+                        <b>Bill To: </b>
+                    </div>
+                    <div class="col-2 text-left">
+                        {{billTo?.customerName}}
+                    </div>
+                </div>
+                <div class="row" style="padding-top:0.5em; padding-bottom:1.0em;">
+                    <div class="col-12">
+                        <span [innerHTML]="message"></span>
+                    </div>
+                </div>
+                <alert [id]="'addBatchAlert'"></alert>
+                <!-- Display Batch Patient and Patient Search -->
+                <div class="row ml-0 mr-0" style="padding:1.0em">
+                    <div class="col-12 bordered_1_black p-2" style="background-color: #f2f2f2">
+                        <add-batch-patient [customerKey]="customerKey" 
+                                           [patient]="patient" 
+                                           (select)="onPatientSelected($event)"
+                                           #add_batch_patient>
+                        </add-batch-patient>
+                        <div class="row" *ngIf="patient">
+                            <div class="col-12 text-left pt-2">
+                                <strong>Currently Ordering</strong> 
+                            </div>
+                        </div>   
+                        <div class="row ml-0 mr-0 pt-1" *ngIf="patient && batchList.length == 0">
+                            <div class="col-12 text-center bordered_1_black p-3" style="background-color: #ffffff">
+                                You currently dont have any orders at the moment.<p>
+                                <button class="btn btn-info btn-link" type="button"
+                                   (click)='onDisplayBatchProduct()'
+                                   data-toggle="modal" 
+                                   data-target="#display_batch_product_modal"
+                                   id="AddProductBtn"
+                                   #add_a_product>
+                                   <b>+</b> Add a Product
+                                </button> 
+                                <button class="btn btn-info btn-link" 
+                                        type="button"
+                                        (click)='onGoBack()'
+                                        id="GoBackBtn2">
+                                   Go Back
+                                </button>    
+                            </div>
+                        </div> 
+                        <div class="row" *ngIf="patient && batchList.length > 0">
+                            <div class="col-12 pl-4 pr-4 pb-3 pt-1">
+                                    <div class="mat-elevation-z8">
+                                
+                                        <!-- Begin Material table for listing Non-Patient Orders -->  
+                                        <mat-table #table [dataSource]="convertToMaterialDatasource(batchList)">
+                            
+                                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumns;let element" [ngClass]="{ 'On Hold' : element.status == 'On Hold'}"></mat-row>
+                                
+                                            <ng-container matColumnDef="productName">
+                                            <mat-header-cell *matHeaderCellDef class="text-left">Product Name</mat-header-cell>
+                                            <mat-cell *matCellDef="let element" class="text-left" [innerHtml]="element | formatProductDescription"></mat-cell>
+                                            </ng-container>
+                                  
+                                            <ng-container matColumnDef="deliveryMechanism">
+                                                <mat-header-cell *matHeaderCellDef class="text-left">Diluent / Container</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-left">{{element | formatPreferenceDiluentContainer}}</mat-cell>
+                                            </ng-container>
+                                            
+                                            <ng-container matColumnDef="volume">
+                                                <mat-header-cell *matHeaderCellDef class="text-left">Volume</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-left">{{element.volume | formatVolume : element.exact}}</mat-cell>
+                                            </ng-container>
+                
+                                            <ng-container matColumnDef="route">
+                                                <mat-header-cell *matHeaderCellDef class="text-left">Route</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-left">{{element | formatRoute}}</mat-cell>
+                                            </ng-container>
+                
+                                            <ng-container matColumnDef="quantity">
+                                                <mat-header-cell *matHeaderCellDef class="text-right">Qty</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-right">{{element.quantity}}</mat-cell>
+                                            </ng-container>
+                
+                                            <ng-container matColumnDef="deliverTo">
+                                                <mat-header-cell *matHeaderCellDef class="text-left pl-2">Deliver To</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.deliveryLocation.locationName}}</mat-cell>
+                                            </ng-container>
+                
+                                            <ng-container matColumnDef="deliverAt">
+                                                <mat-header-cell *matHeaderCellDef class="text-left">Deliver At</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-left">{{element.deliveryDateTime.value | date:'dd-MM-yyyy HH:mm:ss'}}
+                                                    <img *ngIf="element.deliveryDateTime.withinIncentiveCutoffTime" 
+                                                        src="../../../assets/images/incentive.png"
+                                                        width="25px"/>                               
+                                                </mat-cell>
+                                            </ng-container>
+                
+                                            <ng-container matColumnDef="status">
+                                                <mat-header-cell *matHeaderCellDef class="text-left pl-1">Status</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-left pl-1">{{element.status}}</mat-cell>
+                                            </ng-container>
+                
+                                            <ng-container matColumnDef="comments">
+                                                <mat-header-cell *matHeaderCellDef class="text-left">Comments</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-left">{{element.comments}}</mat-cell>
+                                            </ng-container>
+        
+                                            <ng-container matColumnDef="actions">
+                                                <mat-header-cell *matHeaderCellDef class="text-center">Actions</mat-header-cell>
+                                                <mat-cell *matCellDef="let element" class="text-center">
+                                                        <a class="btn p-0" 
+                                                           matTooltip="Edit" 
+                                                           [matTooltipPosition]="'above'"
+                                                           data-toggle="modal"
+                                                           data-target="#display_batch_product_modal"
+                                                           attr.data-prefId="{{element.batchId}}"
+                                                           #edit_button
+                                                           (click)="editBatch(edit_button.getAttribute('data-prefId'))"
+                                                           id="EditLnk">                                           
+                                                            <i class="text-warning p-1 fa fa-edit fa-lg"></i>
+                                                        </a>
+                                                        <a *ngIf="element.status == 'New'"
+                                                           class="btn p-0"
+                                                           matTooltip="On Hold" 
+                                                           [matTooltipPosition]="'above'"
+                                                           attr.data-prefId="{{element.batchId}}"
+                                                           (click)="toggleStatus(toggleStatusButton.getAttribute('data-prefId'))"
+                                                           #toggleStatusButton
+                                                           id="ToggleStatusLnk">                                                           
+                                                            <i class="text-warning p-1 fa fa-pause-circle-o fa-lg"></i>
+                                                        </a>
+                                                        <a *ngIf="element.status == 'On Hold'"
+                                                           class="btn p-0"
+                                                           matTooltip="Set to New" 
+                                                           [matTooltipPosition]="'above'"
+                                                           attr.data-prefId="{{element.batchId}}"
+                                                           (click)="toggleStatus(toggleStatusButton.getAttribute('data-prefId'))"
+                                                           #toggleStatusButton
+                                                           id="ToggleStatusLnk">                                                           
+                                                            <i class="text-warning p-1 fa fa-play-circle-o fa-lg"></i>
+                                                        </a>
+                                                        <a class="btn p-0"
+                                                           matTooltip="Delete" 
+                                                           [matTooltipPosition]="'above'"
+                                                           data-toggle="modal"
+                                                           data-target="#delete_batch_confirmation_modal"
+                                                           attr.data-prefId="{{element.batchId}}"
+                                                           (click)="currentlySelectedBatchIdForDelete = delete_button.getAttribute('data-prefId')"
+                                                           #delete_button
+                                                           id="DeleteLnk">
+                                                            <i class="text-danger p-1 fa fa-trash fa-lg"></i>
+                                                        </a>    
+                                                </mat-cell>
+                                            </ng-container>
+                                            
+                                        </mat-table>                        
+                                        <!-- End Material table for listing Non-Patient Orders -->  
+                    
+                                    </div>
+                            </div>
+                        </div>                         
+                        <div class="row pl-2" *ngIf="patient && batchList.length > 0">
+                            <div class="col text-left"> 
+                                <a href="javascript:void(0);" 
+                                   (click)='onDisplayBatchProduct()'
+                                   data-toggle="modal" 
+                                   data-target="#display_batch_product_modal"
+                                   id="AddAnotherProductLnk"
+                                   #add_another_product><b>+</b> Add Another Product</a>
+                            </div>            
+                        </div>                          
+                    </div>
+                </div>
+               
+                <div class="row mb-5" *ngIf="patient">
+                    <div class="col ml-2 mr-2">                          
+                        <app-list-order-history [customerKey]="customerKey" 
+                                                [patient]="patient"
+                                                (onReorder)="handleReorder($event)"></app-list-order-history>                                        
+                    </div>
+                </div>        
+
+                <div class="row mb-4" *ngIf="patient && ( batchList.length > 0  || mode == 'EDIT')" >
+                    <div class="col-12 text-center">
+                            <button type="button" 
+                                    class="btn btn-link"
+                                    data-toggle="modal" 
+                                    data-target="#cancel_batches_confirmation_modal"
+                                    id="CancelProductsToOrderBtn">
+                                        CANCEL
+                            </button>               
+                            <button type="button" 
+                                    class="btn btn-primary "                                         
+                                    (click)="onAddtoOrder()"
+                                    id="AddToOrderBtn">
+                                        {{submitButtonTitle}}
+                            </button>
+                    </div>
+                </div>
+                <div class="row mb-4" *ngIf="!patient && batchList.length == 0" >
+                    <div class="col-12 text-center">
+                            <button type="button" 
+                                    class="btn btn-link"
+                                    (click)="onGoBack()"
+                                    id="GoBackBtn">
+                                        GO BACK
+                            </button>                                           
+                    </div>
+                </div>
+                   
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Begin Modal Dialog for Adding or Editing Batch Product -->
+<app-display-batch-product [customerKey]="customerKey"                            
+                           [mode]="displayBatchProductMode"
+                           [orderList]="orderList"
+                           [batchList]="batchList"
+                           [tempDeletedBatchesList]="tempDeletedBatchesList"
+                           #app_display_batch_product>
+</app-display-batch-product>
+<!-- End Modal Dialog for Adding or Editing Batch Product -->
+
+<!-- Begin Cancel confirmation modal dialog -->
+<div id="cancel_batches_confirmation_modal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" #cancel_batches_confirmation_modal>
+    <div class="modal-dialog">    
+        <div class="modal-content">         
+        <div class="modal-header">
+            <h5 >Cancel Orders</h5>        
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col">
+                    On clicking <b>YES</b> you will lose all the changes made on this page and you will be navigated back to the previous page.
+                    Click <b>NO</b> to return back to the orders on this page.
+                    Are you sure you want to proceed with discarding the orders on this page?
+                </div> 
+            </div> 
+        </div>  
+        <div class="modal-footer">        
+            <button type="button" class="btn btn-link" data-dismiss="modal" id="CancelOrderNoBtn">NO</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmCancelOrders()" id="ConfirmCancelOrdersBtn">YES               
+            </button>
+        </div>
+        </div>    
+    </div> 
+</div>
+<!-- End Cancel confirmation modal dialog -->    
+
+<!-- Begin Delete batch confirmation modal dialog -->
+<div id="delete_batch_confirmation_modal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" #delete_batch_confirmation_modal>
+    <div class="modal-dialog delete_batch_confirmation_modal_width">    
+        <div class="modal-content">         
+        <div class="modal-header">
+            <h5 >Delete Product from Order</h5>        
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col mb-2 ml-2">
+                    Are you sure you would like to remove the following product from the added products for this patient?
+                </div> 
+            </div> 
+            <div class="row" *ngIf="getBatchFromList(currentlySelectedBatchIdForDelete)">
+                <div class="col-12 pl-4 pr-4 pb-3 pt-1">
+                    <div class="mat-elevation-z8">
+                
+                        <!-- Begin Material table for listing Non-Patient Orders -->  
+                        <mat-table #table [dataSource]="convertToMaterialDatasource(getBatchFromList(currentlySelectedBatchIdForDelete))">
+            
+                            <mat-header-row *matHeaderRowDef="displayedColumnsForDeleteConfirmation"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumnsForDeleteConfirmation;let element" [ngClass]="{ 'On Hold' : element.status == 'On Hold'}"></mat-row>
+                
+                            <ng-container matColumnDef="productNameForDelete">
+                            <mat-header-cell *matHeaderCellDef class="text-left">Product Name</mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="text-left" [innerHtml]="element | formatProductDescription"></mat-cell>
+                            </ng-container>
+                      
+                            <ng-container matColumnDef="deliveryMechanismForDelete">
+                                <mat-header-cell *matHeaderCellDef class="text-left pl-2">Diluent / Container</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left pl-2">{{element | formatPreferenceDiluentContainer}}</mat-cell>
+                            </ng-container>
+                            
+                            <ng-container matColumnDef="volumeForDelete">
+                                <mat-header-cell *matHeaderCellDef class="text-left pr-2">Volume</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left pr-2">{{element.volume | formatVolume : element.exact}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="routeForDelete">
+                                <mat-header-cell *matHeaderCellDef class="text-left">Route</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left">{{element | formatRoute}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="quantityForDelete">
+                                <mat-header-cell *matHeaderCellDef class="text-right">Qty</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-right">{{element.quantity}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="deliverToForDelete">
+                                <mat-header-cell *matHeaderCellDef class="text-left pl-2">Deliver To</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.deliveryLocation.locationName}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="deliverAtForDelete">
+                                <mat-header-cell *matHeaderCellDef class="text-left">Deliver At</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left">{{element.deliveryDateTime.value | date:'dd-MM-yyyy HH:mm:ss'}}
+                                    <img *ngIf="element.deliveryDateTime.withinIncentiveCutoffTime" 
+                                        src="../../../assets/images/incentive.png"
+                                        width="25px"/>                               
+                                </mat-cell>
+                            </ng-container>
+
+                          
+                            
+                        </mat-table>                        
+                        <!-- End Material table for listing Non-Patient Orders -->  
+    
+                    </div>
+                </div>
+            </div> 
+        </div>  
+        <div class="modal-footer">        
+            <button type="button" class="btn btn-link" data-dismiss="modal" id="ConfirmDeleteNoBtn">NO</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmDeleteBatch()" id="ConfirmDeleteYesBtn">YES               
+            </button>
+        </div>
+        </div>    
+    </div> 
+</div>
+<!-- End Delete batch confirmation modal dialog -->   

@@ -1,0 +1,90 @@
+
+ @import "../../../assets/scss/_variables";
+
+.modal-dialog{
+    max-width: 1050px;
+ }
+
+.mat-table{
+  font-size: $shFontSizeExtraSm;
+  font-family: inherit;
+}
+.mat-header-row{
+  border-bottom: 3px solid $white;
+  padding: 0px 10px;  
+}
+.mat-row{
+  border-bottom: 3px solid $white;
+  padding: 10px 10px 0px;
+  align-items: start;
+  min-height: 20px;
+}
+.mat-cell{
+  font-size: inherit;
+}
+.mat-header-row { border-bottom: 2px solid #ccc !important; }
+.mat-elevation-z8{  padding:10px;   box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 0px 0px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)}
+
+.mat-column-select {
+    flex: 0 4% ;
+}
+
+.mat-column-productName {
+  flex: 0 21% ;
+}
+
+.mat-column-deliveryMechanism {
+  flex: 0 20% ;
+}
+
+.mat-column-volume {
+  flex: 0 6% ;
+}
+
+.mat-column-route {
+  flex: 0 14% ;
+}
+
+.mat-column-quantity {
+  flex: 0 5% ;
+}
+
+.mat-column-deliverTo {
+  flex: 0 15% ;
+}
+
+.mat-column-deliverAt {
+  flex: 0 15% ;
+}
+
+.mat-column-productNameForSelectedBatches {
+  flex: 0 20% ;
+}
+
+.mat-column-deliveryMechanismForSelectedBatches {
+  flex: 0 25% ;
+}
+
+.mat-column-volumeForSelectedBatches {
+  flex: 0 6% ;
+}
+
+.mat-column-routeForSelectedBatches {
+  flex: 0 14% ;
+}
+
+.mat-column-quantityForSelectedBatches {
+  flex: 0 5% ;
+}
+
+.mat-column-deliverToForSelectedBatches {
+  flex: 0 15% ;
+}
+
+.mat-column-deliverAtForSelectedBatches {
+  flex: 0 15% ;
+}
+
+.modal-content{
+  overflow-x:hidden;
+}

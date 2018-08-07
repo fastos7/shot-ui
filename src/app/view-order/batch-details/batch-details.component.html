@@ -1,0 +1,98 @@
+<div class="modal-header">  
+  <h5 >Batch Details</h5>    
+</div>
+
+<div class="modal-body">
+    <alert [id]="'saveCommentsSuccessAlert'"></alert>         
+    <!-- Begin Form -->           
+    <form class="form-horizontal" 
+          role="form"
+          [formGroup]="batchDetailsForm"
+          novalidate>
+            <div class="form-horizontal">                
+                <div class="row p-2">
+                    <div class="col"><label>Purchase Order Number :</label></div>
+                    <div class="col">{{shotBatch.ordNo ? shotBatch.ordNo :''}}</div>
+                    <div class="col"><label>Batch No / Expiry Date:</label></div>
+                    <div class="col">{{shotBatch.batchId + (shotBatch.expiryDate ? (' / ' + shotBatch.expiryDate) :'')}}</div>    
+                </div>
+            </div> 
+            <div class="form-horizontal">                
+                <div class="row p-2">
+                    <div class="col-3"><label>Status :</label></div>
+                    <div class="col-3" [ngClass]="shotBatch.status">                                 
+                        {{shotBatch.status}}                                          
+                    </div>                            
+                </div>
+            </div> 
+            <div class="form-horizontal">                
+                <div class="row p-2">
+                    <div class="col-3"><label>Product :</label></div>
+                    <div class="col-9" [innerHtml]="shotBatch | formatDisplayProductDescription"></div>                    
+                </div>
+            </div> 
+            <div class="form-horizontal" *ngIf="shotBatch.deliveryMechanismKey != null && shotBatch.routeId != null">                
+                <div class="row p-2">
+                    <div class="col"><label>Diluent / Container :</label></div>
+                    <div class="col">{{ shotBatch.deliveryMechanismDescription +  (shotBatch.closedSystem ?'': ', No Closed System' ) }}</div>
+                    <div class="col"><label>Route : </label></div>
+                    <div class="col">{{shotBatch.routeName}}</div>    
+                </div>
+            </div>             
+            <div class="form-horizontal" *ngIf="shotBatch.specifiedVolume != null">                
+                <div class="row p-2">
+                    <div class="col"><label>Volume :</label></div>
+                    <div class="col">{{ shotBatch.specifiedVolume | formatVolume : shotBatch.exact}} </div>
+                    <div class="col"><label>Infusion Duration : </label></div>
+                    <div class="col">{{shotBatch.infusionDuration}} hours</div>    
+                </div>
+            </div>
+            <div class="form-horizontal">                
+                <div class="row p-2">
+                    <div class="col"><label>Quantity :</label></div>
+                    <div class="col">{{ shotBatch.quantity}}</div>
+                    <div class="col"><label>Delivery Location : </label></div>
+                    <div class="col">{{ shotBatch.ordDeliverylocation}}</div>    
+                </div>
+            </div>
+            <div class="form-horizontal">                
+                <div class="row p-2">
+                    <div class="col"><label>Delivery Date and Time :</label></div>
+                    <div class="col">{{ shotBatch.deliveryDate + ' ' + shotBatch.deliveryTime | date:'dd-MM-yyyy HH:mm:ss'}}</div>
+                    <div class="col"><label>Treatment Date / Time : </label></div>
+                    <div class="col">{{ getTreatmentDateTime()  | date:'dd-MM-yyyy HH:mm:ss'}}</div>    
+                </div>
+            </div>
+            <div class="form-group" *ngIf="shotBatch.status != 'Cancelled'">                                    
+                <div class="row">                
+                    <div class="col">                          
+                        <label for="comments">Comments:</label>
+                        <textarea class="form-control" rows="3" id="comments" formControlName="comments" name="comments"></textarea>
+                        <div *ngIf="formErrors.comments" class="help error-block">{{formErrors.comments}}</div>
+                    </div>           
+                </div>         
+            </div>
+            <div class="form-horizontal" *ngIf="shotBatch.status == 'Cancelled'">                                    
+                <div class="row p-2">                                    
+                    <div class="col-3"><label>Comments :</label></div>
+                    <div class="col-9">{{shotBatch.comments}}</div>                    
+                </div>         
+            </div>            
+    </form>      
+    <!-- End Form -->   
+    <!-- Begin Batch History -->
+    <app-batch-history [batchId]="shotBatch.shotBatchId"
+                       #app_batch_history>
+    </app-batch-history>
+    <!-- End Batch History -->
+    <div class="row pt-3">
+        <div class="col">
+            <alert [id]="'saveCommentsErrorAlert'"></alert>         
+        </div>
+    </div>    
+</div>
+<div class="modal-footer">        
+    <button type="button" class="btn btn-link" id="CloseBtn" (click)="close()">Close</button>    
+    <button type="button" class="btn btn-link" id="EditBatchBtn" (click)="editBatch()" *ngIf="shotBatch.status != 'Cancelled'">Edit Batch</button>
+    <button type="button" class="btn btn-primary" id="SaveCommentsBtn" (click)="saveComments()" *ngIf="shotBatch.status != 'Cancelled'">SAVE COMMENTS</button>
+</div>

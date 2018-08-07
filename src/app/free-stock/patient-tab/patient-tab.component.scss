@@ -1,0 +1,78 @@
+@import "../../../assets/scss/_variables";
+
+.mat-table{
+  font-size: $shFontSizeExtraSm;
+  font-family: inherit;
+}
+
+.mat-header-row{
+ border-bottom: 3px solid $white;
+ padding: 0px 10px;  
+}
+.mat-row{
+ border-bottom: 3px solid $white;
+ padding: 10px 10px 0px;
+ align-items: start;
+ min-height: 20px;
+}
+
+.mat-cell{
+  font-size: inherit;
+}
+.mat-header-row { border-bottom: 2px solid #ccc !important; }
+.mat-elevation-z8{  
+    padding:10px;   
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 
+                0 0px 0px 1px rgba(0,0,0,.14), 
+                0 3px 14px 2px rgba(0,0,0,.12);
+    background-color : #ffffff;
+}
+
+::ng-deep .mat-content-style > .mat-content {
+    flex : 0 12%;
+}
+
+.mat-column-dsu {
+    flex: 0 30% ;
+}
+
+.mat-column-qtyAtHand {
+    flex: 0 15% ;
+}
+
+.mat-column-actions {
+    flex: 0 55% ;
+}
+
+:host /deep/ .match {
+    color: #009661;
+    font-weight: bold;
+  }
+  
+.completer-limit /deep/ .completer-dropdown {
+    max-height: 20rem;
+    max-width: 100%;    
+    box-shadow: 3px 3px 3px #CCC;
+    width: 100% !important;
+}
+
+:host /deep/ .completer-description {
+    font-style: italic;
+    font-size: 12px;
+}
+
+:host /deep/ .completer-title {
+    font-size: 14px;
+}
+
+:host /deep/ .completer-input {
+    width: 100%;
+}
+
+:host /deep/ .completer-dropdown-holder div {
+    width: 100%;
+}
+
+/deep/ .completer-dropdown {
+    width: 100% !important;    
+}

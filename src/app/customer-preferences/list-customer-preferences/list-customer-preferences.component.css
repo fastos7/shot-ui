@@ -1,0 +1,63 @@
+.btn {
+    padding: 0rem 0rem;
+}
+
+.btn.disabled {
+    cursor : not-allowed;
+    opacity: 1;
+   
+}
+
+.text-disabled {
+    color: #8E908F
+}
+.mat-header-row, .mat-row {
+    padding : 0 15px;
+}
+
+.mat-column-select {
+    flex: 5%;
+}
+
+.mat-column-rank {
+    flex: 5%;
+}
+
+.mat-column-doseRange {
+    flex: 10%;
+}
+
+.mat-column-diluentContainer {
+    flex: 25%;
+}
+
+.mat-column-route {
+    flex: 10%;
+}
+
+.mat-column-volume {
+    flex: 8%;
+}
+
+.mat-column-exact {
+    flex: 5%;
+}
+
+.mat-column-quantity {
+    flex: 7%;
+}
+
+.mat-column-infusionDuration {
+    flex: 10%;
+}
+
+.mat-column-comments {
+    flex: 20% ;
+}
+
+.preference-text{
+    position: absolute;
+    bottom: 2px;
+    right: 140px;
+    color: #333333;
+}

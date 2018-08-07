@@ -1,0 +1,367 @@
+<div class="new_order_container">
+
+    <div class="new_order_animation_container">
+        <div class="new_order_panel" [@visibilityChanged]="visibility">
+            
+            <div class="row" >
+                <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <h4>New Order</h4>
+                            </div>  
+                        </div>  
+                        <div class="row ml-2">
+                            <div class="col">
+                                <!-- Begin Form -->
+                                <form class="form-horizontal" 
+                                        role="form"
+                                        [formGroup]="newOrderForm"
+                                        novalidate>
+                                        <alert [id]="'newOrderAlertSuccess'"></alert>
+                                    <div class="row form-group">
+                                        <div class="col-2">
+                                            <label class="control-label pt-2" for="poNumber">Purchase Order Number :</label> 
+                                        </div>      
+                                        <div class="col-3">
+                                            <input type="text" 
+                                                class="form-control"                   
+                                                name="poNumber"
+                                                formControlName="poNumber"
+                                                placeholder="Purchase Order Number "
+                                                id="poNumber"/>                          
+                                        </div>      
+                                        <div class="col-2">
+                                            <div *ngIf="formErrors.poNumber" class="error-block pt-2">{{formErrors.poNumber}}</div>
+                                        </div>      
+                                    </div>   
+                                    
+                                    <div class="row form-group">
+                                        <div class="col-2">
+                                            <label class="control-label pt-2" for="billTo">Bill To :</label>    
+                                        </div>      
+                                        <div class="col-3">
+                                            <select class="form-control" 
+                                                    id="billTo"
+                                                    name="billTo"
+                                                    [ngModel]="selectedBillTo" 
+                                                    formControlName="billTo"
+                                                    [compareWith]="compareBillTo">
+                                                <option *ngIf="billToList?.length > 1" [ngValue]="null" >Select a Bill To</option>                                    
+                                                <option *ngFor="let billTo of billToList" [ngValue]="billTo">{{billTo.customerName}}</option>              
+                                                <option *ngIf="billToList?.length <= 0" [ngValue]="null">No Bill To found.</option>
+                                            </select>                          
+                                        </div>      
+                                        <div class="col-2">
+                                            <div *ngIf="formErrors.billTo" class="error-block pt-2">{{formErrors.billTo}}</div>
+                                        </div>      
+                                    </div>
+                            
+                                    
+                                    <div class="row form-group form-inline">
+                                    <div class="col-3">              
+                                        <a class="btn btn-lg text-center bordered_1_black p-4"  
+                                           style="color : #000000; text-decoration:none;"               
+                                           (click)="showAddBatch()"
+                                           id="AddItemBtn">
+                                            <i class="fa fa-plus fa-3x"></i><br>
+                                            Add Item									
+                                        </a>
+                                    </div>            
+                                    </div>
+                            
+                                    <!-- Display message if there is no batch in the list yet -->
+                                    <div *ngIf="orderList?.length <= 0" class="row ml-0 mr-0">
+                                    <div class="col-12 text-center pt-4 pb-4 bordered_1_black">              
+                                        You have no items in this order at this time
+                                    </div>            
+                                    </div>
+                            
+                                    <!-- Begin Display list of orders for non-patient -->
+                                    <div *ngIf="getNonPatientOrders().length > 0" class="row ml-0 mr-0 mb-4">
+                                    <div class="col-12 text-center bordered_1_black" >              
+                                        <div class="row pl-0 pt-2 pr-2 order_w_no_patient_header_bottom_border">
+                                            <div class="col-6 text-left" >
+                                            <strong>Orders with no patient name</strong>
+                                            </div>  
+                                            <div class="col-6 text-right" >
+                                                <!--button type="button" class="btn btn-link">Copy to a Patient</button-->
+                                                <a class="btn p-0" matTooltip="Edit" 
+                                                                [matTooltipPosition]="'above'"
+                                                                (click)="editPatientOrders(0)">                                   
+                                                                <i class="text-warning p-1 fa fa-edit fa-lg"></i>
+                                                </a>
+                                                <a class="btn p-0" [ngClass]="{'disabled': getNonPatientOrders()[0].batchList.length <= 0}"
+                                                                matTooltip="Delete" 
+                                                                [matTooltipPosition]="'above'"
+                                                                data-toggle="modal" 
+                                                                data-target="#remove_orders_modal"
+                                                                (click)="deletePatientOrders(0)">                                   
+                                                                <i class="p-1 fa fa-trash fa-lg"
+                                                                [ngClass]="{'text-disabled':getNonPatientOrders()[0].batchList.length <= 0 ,
+                                                                            'text-danger':getNonPatientOrders()[0].batchList.length > 0}" ></i>
+                                                </a>
+                                            </div>   
+                                        </div>  
+                                        <!-- Display message if there is no batch in the list yet -->
+                                        <div *ngIf="getNonPatientOrders()[0].batchList.length <= 0" class="row ml-0 mr-0">
+                                            <div class="col-12 text-center pt-4 pb-4">              
+                                                You have no items in this order for this patient at this time
+                                            </div>            
+                                        </div> 
+                                        <div class="row" *ngIf="getNonPatientOrders()[0].batchList.length > 0">
+                                            <div class="col-12 p-3">
+                                                <div class="mat-elevation-z8">
+                                                
+                                                <!-- Begin Material table for listing Non-Patient Orders -->  
+                                                <mat-table #table [dataSource]="convertToMaterialDatasource(getNonPatientOrders()[0].batchList)">
+                                    
+                                                    <mat-header-row *matHeaderRowDef="displayedColumnsForNoPatientName"></mat-header-row>
+                                                    <mat-row *matRowDef="let row; columns: displayedColumnsForNoPatientName;let element" [ngClass]="{ 'On Hold' : element.status == 'On Hold'}"></mat-row>
+                                        
+                                                    <ng-container matColumnDef="productNameForNoPatientName">
+                                                        <mat-header-cell *matHeaderCellDef class="text-left">Product Name</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" class="text-left" [innerHtml]="element | formatProductDescription"></mat-cell>
+                                                    </ng-container>
+                                          
+                                                    <ng-container matColumnDef="deliveryMechanismForNoPatientName">
+                                                        <mat-header-cell *matHeaderCellDef class="text-left">Diluent / Container</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" class="text-left">{{element | formatPreferenceDiluentContainer}}</mat-cell>
+                                                    </ng-container>
+                                                    
+                                                    <ng-container matColumnDef="volumeForNoPatientName">
+                                                        <mat-header-cell *matHeaderCellDef class="text-left">Volume</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" class="text-left">{{element.volume | formatVolume:element.exact}}</mat-cell>
+                                                    </ng-container>
+                            
+                                                    <ng-container matColumnDef="routeForNoPatientName">
+                                                        <mat-header-cell *matHeaderCellDef class="text-left">Route</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" class="text-left">{{element | formatRoute}}</mat-cell>
+                                                    </ng-container>
+                            
+                                                    <ng-container matColumnDef="quantityForNoPatientName">
+                                                        <mat-header-cell *matHeaderCellDef class="text-right">Qty</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" class="text-right">{{element.quantity}}</mat-cell>
+                                                    </ng-container>
+                            
+                                                    <ng-container matColumnDef="deliverToForNoPatientName">
+                                                        <mat-header-cell *matHeaderCellDef class="text-left pl-2">Deliver To</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.deliveryLocation.locationName}}</mat-cell>
+                                                    </ng-container>
+                            
+                                                    <ng-container matColumnDef="deliverAtForNoPatientName">
+                                                        <mat-header-cell *matHeaderCellDef class="text-left">Deliver At</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" class="text-left">{{element.deliveryDateTime.value | date:'dd-MM-yyyy HH:mm:ss'}}
+                                                            <img *ngIf="element.deliveryDateTime.withinIncentiveCutoffTime" 
+                                                                    src="../../../assets/images/incentive.png"
+                                                                    width="25px"/>                               
+                                                        </mat-cell>
+                                                    </ng-container>
+                            
+                                                    <ng-container matColumnDef="statusForNoPatientName">
+                                                            <mat-header-cell *matHeaderCellDef class="text-left pl-2">Status</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.status}}</mat-cell>
+                                                    </ng-container>
+                            
+                                                    <ng-container matColumnDef="commentsForNoPatientName">
+                                                        <mat-header-cell *matHeaderCellDef class="text-left">Comments</mat-header-cell>
+                                                        <mat-cell *matCellDef="let element" class="text-left">{{element.comments}}</mat-cell>
+                                                    </ng-container>
+                                                    
+                                                    </mat-table>                        
+                                                    <!-- End Material table for listing Non-Patient Orders -->  
+                            
+                                                </div>  
+                                            </div>    
+                                            </div>  
+                                    </div>            
+                                    </div>
+                                    <!-- End Display list of orders for non-patient -->
+                            
+                                    <!-- Begin Display list of orders for patients -->        
+                                    <div *ngIf="getPatientsOrders().length > 0" class="row ml-0 mr-0 mb-2">
+                                    <div class="col-12 text-left pt-2 bordered_1_black" >              
+                                        <strong>Patient Orders</strong>
+                            
+                                        <!-- Begin Individual Patient Orders -->  
+                                        <div *ngFor="let patientOrders of getPatientsOrders()"
+                                                class="col-12 text-center mt-1 mb-2 bordered_1_black">              
+                                            <div class="row pl-0 pt-2 pr-2 order_w_no_patient_header_bottom_border">
+                                                <div class="col-6 text-left" >
+                                                <!-- Begin Patient information -->  
+                                                <span><strong>{{patientOrders.patient.fullName}}</strong></span>
+                                                <span class="ml-5"><strong>MRN</strong></span><span class="ml-2">{{patientOrders.patient.mrnNo}}</span>
+                                                <span class="ml-5"><strong>Date Of Birth</strong></span><span class="ml-2">{{patientOrders.patient.dob}}</span>
+                                                <!-- End Patient information -->  
+                                                </div>  
+                                                <div class="col-6 text-right" >
+                                                    <!--button type="button" class="btn btn-link">Copy to another Patient</button-->
+                                                    <a class="btn p-0" matTooltip="Edit" 
+                                                                    [matTooltipPosition]="'above'"
+                                                                    (click)="editPatientOrders(patientOrders.patient.patientId)">                                   
+                                                                    <i class="text-warning p-1 fa fa-edit fa-lg"></i>
+                                                    </a>
+                                                    <a class="btn p-0" [ngClass]="{'disabled': patientOrders.batchList.length <= 0}"
+                                                                    matTooltip="Delete" 
+                                                                    [matTooltipPosition]="'above'"
+                                                                    data-toggle="modal" 
+                                                                    data-target="#remove_orders_modal"
+                                                                    (click)="deletePatientOrders(patientOrders.patient.patientId)">                                   
+                                                                    <i class="p-1 fa fa-trash fa-lg"
+                                                                    [ngClass]="{'text-disabled':patientOrders.batchList.length <= 0 ,
+                                                                                'text-danger':patientOrders.batchList.length > 0}" ></i>
+                                                    </a>
+                                                </div>   
+                                            </div> 
+                                            <!-- Display message if there is no batch in the list yet -->
+                                            <div *ngIf="patientOrders.batchList.length <= 0" class="row ml-0 mr-0">
+                                                <div class="col-12 text-center pt-4 pb-4">              
+                                                    You have no items in this order for this patient at this time
+                                                </div>            
+                                            </div> 
+                                            <div class="row" *ngIf="patientOrders.batchList.length > 0">
+                                                <div class="col-12 p-3">
+                                                    <div class="mat-elevation-z8">
+                                                    
+                                                    <!-- Begin Material table for listing individual Patient Orders -->  
+                                                    <mat-table #table [dataSource]="convertToMaterialDatasource(patientOrders.batchList)">
+                                        
+                                                        <mat-header-row *matHeaderRowDef="displayedColumnsForPatients"></mat-header-row>
+                                                        <mat-row *matRowDef="let row; columns: displayedColumnsForPatients;let element" [ngClass]="{ 'On Hold' : element.status == 'On Hold'}"></mat-row>
+                                            
+                                                        <ng-container matColumnDef="productName">
+                                                            <mat-header-cell *matHeaderCellDef class="text-left">Product Name</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-left" [innerHtml]="element | formatProductDescription"></mat-cell>
+                                                        </ng-container>
+                                            
+                                                        <ng-container matColumnDef="deliveryMechanism">
+                                                            <mat-header-cell *matHeaderCellDef class="text-left">Diluent / Container</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-left">{{element | formatPreferenceDiluentContainer}}</mat-cell>
+                                                        </ng-container>
+                                                        
+                                                        <ng-container matColumnDef="volume">
+                                                            <mat-header-cell *matHeaderCellDef class="text-left">Volume</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-left">{{element.volume | formatVolume:element.exact}}</mat-cell>
+                                                        </ng-container>
+                                
+                                                        <ng-container matColumnDef="route">
+                                                            <mat-header-cell *matHeaderCellDef class="text-left">Route</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-left">{{element | formatRoute}}</mat-cell>
+                                                        </ng-container>
+                                
+                                                        <ng-container matColumnDef="quantity">
+                                                            <mat-header-cell *matHeaderCellDef class="text-right">Qty</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-right">{{element.quantity}}</mat-cell>
+                                                        </ng-container>
+                                
+                                                        <ng-container matColumnDef="deliverTo">
+                                                            <mat-header-cell *matHeaderCellDef class="text-left pl-4">Deliver To</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-left pl-4">{{element.deliveryLocation.locationName}}</mat-cell>
+                                                        </ng-container>
+                                
+                                                        <ng-container matColumnDef="deliverAt">
+                                                            <mat-header-cell *matHeaderCellDef class="text-left">Deliver At</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-left">{{element.deliveryDateTime.value | date:'dd-MM-yyyy HH:mm:ss'}}
+                                                            <img *ngIf="element.deliveryDateTime.withinIncentiveCutoffTime" 
+                                                                    src="../../../assets/images/incentive.png"
+                                                                    width="25px"/>  
+                                                            </mat-cell>
+                                                        </ng-container>
+                                                        
+                                                        <ng-container matColumnDef="status">
+                                                                <mat-header-cell *matHeaderCellDef class="text-left pl-4">Status</mat-header-cell>
+                                                                <mat-cell *matCellDef="let element" class="text-left pl-4">{{element.status}}</mat-cell>
+                                                        </ng-container>
+                            
+                                                        <ng-container matColumnDef="comments">
+                                                            <mat-header-cell *matHeaderCellDef class="text-left">Comments</mat-header-cell>
+                                                            <mat-cell *matCellDef="let element" class="text-left">{{element.comments}}</mat-cell>
+                                                        </ng-container>
+                                                        
+                                                        </mat-table>  
+                                                        <!-- End Material table for listing individual Patient Orders -->   
+                                                    </div>  
+                                                </div>    
+                                                </div>    
+                                        </div>
+                                        <!-- End Individual Patient Orders -->  
+                            
+                                    </div>            
+                                    </div>
+                                    <!-- End Display list of orders for patients -->        
+                            
+                                    <alert [id]="'newOrderAlertError'"></alert>
+                                    <div class="row mt-2">
+                                    <div class="col text-right"> 
+                                        <button type="button" 
+                                                class="btn btn-link" 
+                                                [disabled]="hasBatchesInOrders() == false"                                     
+                                                data-toggle="modal" 
+                                                data-target="#cancel_order_confirmation_modal"
+                                                id="CancenlBtn">
+                                                    CANCEL
+                                        </button>               
+                                        <button type="button" 
+                                                class="btn btn-primary " 
+                                                [disabled]="hasBatchesInOrders() == false" 
+                                                (click)="onSubmitOrder()"
+                                                id="SubmitOrderBtn">
+                                                    SUBMIT ORDER
+                                        </button>
+                                    </div>            
+                                    </div>
+                            
+                                </form>  
+                                <!-- End Form -->
+                            </div>  
+                        </div>  
+                </div>
+            </div>
+
+        </div>
+        <div class="new_order_panel">
+            
+            <app-add-batch [mode]="addBatchComponentMode"
+                [visibility]="addBatchVisibility"
+                [poNumber]="newOrderForm.get('poNumber').value"
+                [billTo]="newOrderForm.get('billTo').value"
+                (onCancel)="handleCancelOrders($event)"  
+                [orderForEdit]="currentOrderForEdit"   
+                [orderList]="orderList"          
+                #app_add_batch>
+            </app-add-batch>
+
+        </div>
+
+    </div>
+</div>
+
+
+                                                                        
+<!-- Begin Cancel confirmation modal dialog -->
+<div id="cancel_order_confirmation_modal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" #cancel_order_confirmation_modal>
+    <div class="modal-dialog">    
+        <div class="modal-content">         
+        <div class="modal-header">
+            <h5 >Cancel New Order</h5>        
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col">
+                    You will lose your orders. Are you sure you want to cancel these orders?
+                </div> 
+            </div> 
+        </div>  
+        <div class="modal-footer">        
+            <button type="button" class="btn btn-link" data-dismiss="modal" id="CancelOrderNoBtn">NO</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="onConfirmCancelOrder()" id="CancelOrderYesBtn">YES               
+            </button>
+        </div>
+        </div>    
+    </div> 
+</div>
+<!-- End Cancel confirmation modal dialog -->      
+
+
+
+<app-remove-orders [orderList]="orderList"
+                   [patiendId]="currentPatientIdForDelete"></app-remove-orders>

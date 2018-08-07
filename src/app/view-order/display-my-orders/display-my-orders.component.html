@@ -1,0 +1,8 @@
+<app-display-my-orders-header [dayOrWeek]="dayOrWeek" [deliveryOrTreatment]="deliveryOrTreatment" [startDate]="startDate" [startDateForWeekView]="startDateForWeekView" (deliveryOrTreatmentChanged)="deliveryOrTreatmentChangedHandler($event)"></app-display-my-orders-header>
+<app-list-days [daysArray]="daysArray" [dayOrWeek]="dayOrWeek" [deliveryOrTreatment]="deliveryOrTreatment" *ngIf='!isError && dayOrWeek === "week" && daysArray !== null && daysArray.length > 0'></app-list-days>
+<app-list-times *ngIf='!isError && dayOrWeek === "day" && daysArray !== null && daysArray.length > 0' [timesArray]="daysArray[0].value" [dayOrWeek]="dayOrWeek"></app-list-times>
+<div *ngIf='!isError && (daysArray === null || daysArray.length === 0)'>
+  <h6 class="p-3 pb-5 pt-5">{{displayMessage}}</h6>
+</div>
+<br>
+<alert [id]="'viewOrderErrorAlert'"></alert>

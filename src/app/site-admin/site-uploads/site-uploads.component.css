@@ -1,0 +1,9 @@
+img {
+    height:70%; 
+    width:5%; 
+    cursor: pointer;
+}
+
+label {
+    cursor: auto;
+}

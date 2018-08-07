@@ -1,0 +1,92 @@
+<div class=row>
+  <div class=col>
+    <div class=row style="padding-top: 1.0em;">
+      <div class='col pb-3'>
+        <alert></alert>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <label for=firstName>First Name:</label>
+      </div>
+      <div class="col-3">
+        <p>{{user.firstName}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <label for=firstName>Last Name:</label>
+      </div>
+      <div class="col-3">
+        <p>{{user.lastName}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <label for=firstName>Email:</label>
+      </div>
+      <div class="col-3">
+        <p>{{user.email}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-1">
+        <label for=firstName>Status:</label>
+      </div>
+      <div class="col-3">
+        <p>{{user.isActive == true || user.isActive == 'true'? 'Active' : 'In-Active'}}</p>
+      </div>
+    </div>
+    <ng-template ngFor let-userSite [ngForOf]="user.userAuthorities">
+      <hr>
+      <div class="row">
+        <div class="col-1">
+          <label for=firstName>
+            <u>User Site</u>:</label>
+        </div>
+        <div class="col-5">
+          <p>
+            <u>{{userSite.customerName}}</u>
+            <b>{{userSite.isDefaultSite? '(Default)':''}}</b>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-1">
+          <label for=firstName>Role(s):</label>
+        </div>
+        <div class="col-11">
+          <p>
+            <ng-template ngFor let-role [ngForOf]="userSite.roleDTOs" let-i="index">
+              {{role.description}}{{i === (userSite.roleDTOs.length-1)? '':', '}}
+            </ng-template>
+          </p>
+        </div>
+      </div>
+      <div class="row" *ngIf="userSite.billTos.length > 0">
+        <div class="col-1">
+          <label for=firstName>Bill To(s):</label>
+        </div>
+        <div class="col-11">
+          <p>
+            <ng-template ngFor let-billTo [ngForOf]="userSite.billTos" let-i="index">
+              {{billTo.customerName}}{{i === (userSite.billTos.length-1)? '':', '}}
+            </ng-template>
+          </p>
+        </div>
+      </div>
+    </ng-template>
+    <br>
+    <div class="row">
+      <div class="col-2 text-right">
+        <a href="javascript:void(0);" (click)='editUser(user)'>Edit this User</a>
+      </div>
+      <div class="col-2 text-center">
+        <a href="javascript:void(0);" (click)='searchUsers()'>Search Users</a>
+      </div>
+      <div class="col-2">
+        <a href="javascript:void(0);" (click)='addUser()'>Add another User</a>
+      </div>
+    </div>
+  </div>
+</div>

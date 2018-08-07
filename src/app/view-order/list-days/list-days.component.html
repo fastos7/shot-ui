@@ -1,0 +1,6 @@
+<div class='row week-view-container'>
+  <div class="col week-view-day-container" [ngClass]='{"width7": daysArray.length === 7,"width5":daysArray.length < 7, "first": i===0}' *ngFor="let dayData of daysArray; let i = index">
+    <div class="week-view-day-header" [routerLink]="['/my-orders', 'day', deliveryOrTreatment, dayData.label]">{{dayData.label | date:'EEE, dd-MM-yyyy'}}</div>
+    <app-list-times *ngIf='dayData !== null && dayData.value.length > 0' [timesArray]="dayData.value" [dayOrWeek]="dayOrWeek"></app-list-times>
+  </div>
+</div>

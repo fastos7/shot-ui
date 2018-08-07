@@ -1,0 +1,37 @@
+<div class=row>
+  <div class="col">
+      <div class=row>
+          <div class=col-12>
+
+              <div class="row text-lg">
+                  <div class="col">
+                      <h4>Customer Preferences </h4>
+                  </div>
+              </div>
+              <div class="row pt-2 pb-3">
+                  <div class="col-12">
+                      <span>Please select a drug in order to view / edit or add preferences</span>                      
+                  </div>
+              </div>              
+              <div class="row pt-3 pb-3">
+                    <div class="col-1">
+                        <label>Product: </label>
+                    </div>
+                    <div class="col-3">
+                        <app-search-product [userAuthorities]="userAuthorities"
+                                            [mode]="'CustomerPreference'"
+                                            (selectedProduct)="handleSelectedProduct($event)"
+                                            [productSearchId]="'CustomerPreferenceProductSearch'">
+                        </app-search-product>
+                    </div>                                              
+              </div> 
+              <div class="row " [ngClass]="{'invisible' : !showPreferencesTable}">                    
+                    <div class="col-12" >
+                        <app-list-customer-preferences [product]="currentlySelectedProduct"
+                                                       [customerPreferences]="customerPreferences"></app-list-customer-preferences>
+                    </div>
+              </div>                  
+          </div>
+      </div>
+  </div>
+</div>

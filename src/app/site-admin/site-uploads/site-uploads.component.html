@@ -1,0 +1,103 @@
+<div class=row>
+    <div class=col>
+        <form name="uploadForm" class="form-group" [formGroup]="uploadForm">
+            <fieldset>
+                <div class=row>
+                    <div class="col-8">
+                        <alert></alert>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <label>Stability Matrix</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-left: 1px; margin-top: 5px;">
+                    <div class="col-8" style="border:1px solid #000000;">
+                        <div class="row" style="margin-top: 0.5rem;">
+                            <div class="col-7">
+                                <p>Please provide a file to upload the latest stability matrix.</p>
+                            </div>
+                            <div class="col-5 text-right">
+                                <a href="javascript:void(0);" (click)='downloadStabilityMatrix()'>Download existing Stability Matrix</a>
+                            </div>
+                        </div>
+                        <div class=row>
+                            <div class="col-3">
+                                <label>New stability matrix file:</label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" readonly value="{{userMatrixFile != null? userMatrixFile.name : ''}}">
+                                    <label class="input-group-btn">
+                                      <span class="btn btn-primary">
+                                        <input id="matrix" type="file" style="display: none;" formControlName="matrix"
+                                          name="matrix" #matrix (change)="selectUserMatrix($event)"
+                                          accept=".pdf">Browse
+                                      </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="col-9">
+                                <input id="matrix" type="file" formControlName="matrix" (change)="selectUserMatrix($event)" accept="pdf" style="width:40%">&nbsp;
+                                <img src="../../../assets/images/folder.png" onclick="javascript: document.getElementById('matrix').click()" />
+                            </div>
+                            -->
+                        </div>
+                        <div class="row" style="margin-bottom: 0.5rem; margin-top: 2.0rem;">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-primary" type="submit" (click)='uploadUserMatrix()'>Upload Stability Matrix</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 5rem;">
+                    <div class="col-3">
+                        <label>User Manual</label>
+                    </div>
+                </div>
+                <div class="row" style="margin-left: 1px; margin-top: 5px;">
+                    <div class="col-8" style="border:1px solid #000000;">
+                        <div class="row" style="margin-top: 0.5rem;">
+                            <div class="col-7">
+                                <p>Please provide a file to upload the latest user manual.</p>
+                            </div>
+                            <div class="col-5 text-right">
+                                <a href="javascript:void(0);" (click)='downloadUserManual()'>Download existing User Manual</a>
+                            </div>
+                        </div>
+                        <div class=row>
+                            <div class="col-3">
+                                <label>New user manual file:</label>
+                            </div>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" readonly value="{{userManualFile != null? userManualFile.name : ''}}">
+                                    <label class="input-group-btn">
+                                      <span class="btn btn-primary">
+                                        <input id="manual" type="file" style="display: none;" formControlName="manual"
+                                          name="manual" #manual (change)="selectUserManual($event)"
+                                          accept=".pdf">Browse
+                                      </span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!--
+                            <div class="col-9">
+                                <input type="file" id="manual" formControlName="manual" (change)="selectUserManual($event)" accept=".pdf, application/pdf" style="width:40%">&nbsp;
+                                <img src="../../../assets/images/folder.png" onclick="javascript: document.getElementById('manual').click()" />
+                            </div>
+                            -->
+                        </div>
+                        <div class="row" style="margin-bottom: 0.5rem; margin-top: 2.0rem;">
+                            <div class="col-12 text-center">
+                                <button class="btn btn-primary" type="submit" (click)='uploadUserManual()'>Upload User Manual</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

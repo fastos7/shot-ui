@@ -1,0 +1,44 @@
+<div class=row>
+  <div class=col>
+    <form id="accPrefForm" name="userForm" class="form-group" [formGroup]="accPrefForm" (ngSubmit)="onSubmit()">
+      <fieldset>
+        <div class=row>
+          <div class="col pb-3">
+            <alert></alert>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <div class=form-field>
+              <label for=defaultSite>Default Site:</label>
+              <select class="form-control" name="defaultSite" id="defaultSite" formControlName="defaultSite">
+                <ng-template ngFor let-userSite [ngForOf]="user.userAuthorities" let-dti="index">
+                  <option [ngValue]="userSite.customerKey">{{userSite.customerName}}</option>
+                </ng-template>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="padding-top: 1rem;" *ngIf="hasOrdersPermission()">
+          <div class="col-3">
+            <div class=form-field>
+              <label for=defaultOrderView>Default view for my orders:</label>
+              <select class="form-control" name="defaultOrderView" id="defaultOrderView" formControlName="defaultOrderView">
+                <option value="DAY_VIEW_DELV_TIME">Day View - Delivery Date Time</option>
+                <option value="DAY_VIEW_TRMT_TIME">Day View - Treatment Date Time</option>
+                <option value="WEEK_VIEW_DELV_TIME">Week View - Delivery Date Time</option>
+                <option value="WEEK_VIEW_TRMT_TIME">Week View - Treatment Date Time</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="padding-top: 2rem;">
+          <div class="col-5">
+            <a class="btn btn-link" href="javascript:void(0);" (click)='reset()'>Reset</a>&nbsp;&nbsp;
+            <button class="btn btn-primary" type="submit">Save</button>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</div>

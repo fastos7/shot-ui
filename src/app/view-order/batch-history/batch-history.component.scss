@@ -1,0 +1,90 @@
+@import "../../../assets/scss/_variables";
+
+.mat-table{
+  font-size: $shFontSizeExtraSm;
+  font-family: inherit;
+}
+
+.mat-header-row{
+ border-bottom: 3px solid $white;
+ padding: 0px 10px;  
+}
+.mat-row{
+ border-bottom: 3px solid $white;
+ padding: 10px 10px 0px;
+ align-items: start;
+ min-height: 20px;
+}
+
+.mat-cell{
+  font-size: inherit;
+}
+.mat-header-row { border-bottom: 2px solid #ccc !important; }
+.mat-elevation-z8{  
+    padding:10px;   
+    box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 
+                0 0px 0px 1px rgba(0,0,0,.14), 
+                0 3px 14px 2px rgba(0,0,0,.12);
+    background-color : #ffffff;
+}
+
+::ng-deep .mat-content-style > .mat-content {
+    flex : 0 12%;
+}
+
+::ng-deep .cdk-overlay-container{
+    z-index: 1200 !important;
+}
+
+.mat-expansion-panel-header-title {
+    color: $linkColor;
+    text-decoration: underline;
+    font-size: 13px;
+}
+
+::ng-deep .mat-expansion-indicator-style > .mat-expansion-indicator:after {
+    color: $linkColor; 
+}
+
+.mat-column-date {
+    flex: 0 15% ;
+}
+
+.mat-column-user {
+    flex: 0 10% ;
+}  
+  
+.mat-column-product {
+    flex: 0 15% ;
+} 
+
+.mat-column-quantity {
+    flex: 0 5% ;
+} 
+  
+.mat-column-volume {
+    flex: 0 5% ;
+} 
+
+.mat-column-route {
+    flex: 0 10% ;
+} 
+  
+.mat-column-treatmentDateTime {
+    flex: 0 10% ;
+}
+  
+.mat-column-status {
+    flex: 0 10% ;
+}
+  
+.mat-column-deliveryDateTime {
+    flex: 0 10% ;
+}
+ 
+.mat-column-comments {
+    flex: 0 10% ;
+}
+                                
+  
+    

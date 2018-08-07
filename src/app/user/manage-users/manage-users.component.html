@@ -1,0 +1,17 @@
+<div class=row>
+    <div class="col">
+        <h4>User Management</h4>
+    </div>
+</div>
+<div class=row>
+    <div class=col>
+        <mat-tab-group dynamicHeight="true" [(selectedIndex)]="selectedTab" (selectedTabChange)="tabChanged($event)">
+            <mat-tab label="Search Users">
+                <app-search-user [sites]="sites" [roles]="roles"></app-search-user>
+            </mat-tab>
+            <mat-tab label="Add/Edit User">
+                <app-create-user-tab [sites]="sites" [roles]="roles" (search)="changeTab(0)" [user]="user"></app-create-user-tab>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

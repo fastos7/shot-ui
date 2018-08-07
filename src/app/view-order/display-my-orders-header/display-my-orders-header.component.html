@@ -1,0 +1,37 @@
+<div class=row>
+    <div class="col"><h4>My Orders</h4></div>
+    <div class="col-3 view-order-hdr-links"><a href=# class="btn btn-link pull-right">New Order</a><a (click)="onPrint()" class="btn btn-link pull-right">Print</a></div>
+</div>
+<div class=row>
+    <div class=col *ngIf='deliveryOrTreatment==="delivery"'>
+        <div class="btn btn-my-orders-header inactive">Delivery times</div>
+        <a class="btn btn-my-orders-header active" *ngIf="dayOrWeek === 'day'" [routerLink]="['/my-orders', dayOrWeek, 'treatment', startDate | date: 'yyyy-MM-dd']">Treatment times</a>
+        <a class="btn btn-my-orders-header active" *ngIf="dayOrWeek === 'week'" [routerLink]="['/my-orders', dayOrWeek, 'treatment', startDateForWeekView | date: 'yyyy-MM-dd']">Treatment times</a>
+        </div>
+    <div class=col *ngIf='deliveryOrTreatment==="treatment"'>
+    <a class="btn btn-my-orders-header active" *ngIf="dayOrWeek === 'day'" [routerLink]="['/my-orders', dayOrWeek, 'delivery', startDate | date: 'yyyy-MM-dd']">Delivery times</a>
+    <a class="btn btn-my-orders-header active" *ngIf="dayOrWeek === 'week'" [routerLink]="['/my-orders', dayOrWeek, 'delivery', startDateForWeekView | date: 'yyyy-MM-dd']">Delivery times</a>
+    <div class="btn btn-my-orders-header inactive">Treatment times</div>
+  </div>
+  <div class=col-5 *ngIf='deliveryOrTreatment==="delivery" || deliveryOrTreatment==="treatment"'>
+    <a class="btn btn-my-orders-header active" [ngClass]="{'disabled':!isPrev}" [routerLink]="['/my-orders', dayOrWeek, deliveryOrTreatment, previousDate | date: 'yyyy-MM-dd']"><</a>
+    <div class="btn btn-my-orders-header inactive day-view-date-container" *ngIf="dayOrWeek === 'day'">
+      <div class="day-view-date-display">
+          {{startDate | date: 'EEE, dd-MM-yyyy'}} 
+          <input matInput class=hiddenDateInput disabled [(ngModel)]="startDate" [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (dateChange)="dateChanged()"/>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker disabled="false"></mat-datepicker>
+      </div>
+    </div>  
+    <div class="btn btn-my-orders-header inactive" *ngIf="dayOrWeek === 'week'">{{startDateForWeekView | date: 'EEE, dd-MM-yyyy'}} to {{endDateForWeekView | date: 'EEE, dd-MM-yyyy'}}</div>
+    <a class="btn btn-my-orders-header active" [ngClass]="{'disabled':!isNext}" [routerLink]="['/my-orders', dayOrWeek, deliveryOrTreatment, nextDate | date: 'yyyy-MM-dd']">></a>
+  </div>
+  <div class=col-2 *ngIf='dayOrWeek==="day"'>
+    <a class="btn btn-my-orders-header active pull-right" [routerLink]="['/my-orders', 'week', deliveryOrTreatment, startDateForWeekView | date: 'yyyy-MM-dd']">Week</a>
+    <div class="btn btn-my-orders-header inactive pull-right">Day</div>
+  </div>
+  <div class=col-2 *ngIf='dayOrWeek==="week"'>
+      <div class="btn btn-my-orders-header inactive pull-right">Week</div>
+      <a class="btn btn-my-orders-header active pull-right" [routerLink]="['/my-orders', 'day', deliveryOrTreatment, startDate | date: 'yyyy-MM-dd']">Day</a>
+    </div>
+  </div>

@@ -1,0 +1,50 @@
+<!-- Patient/Non-Patient Search -->
+<ng-container *ngIf="showPatientSearch; then searchPTemplate; else listPTemplate"></ng-container>
+<ng-template #searchPTemplate>
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="patientName">Patient Name / MRN: </label>
+        </div>
+        <div class="form-group" style="padding-left: 3.0em">
+            <app-search-patient 
+                [customerKey]="customerKey"
+                [searchText]="selectedPatient.fullName"
+                (select)="onPatientSelected($event)">
+            </app-search-patient>
+        </div>
+        <div class="form-group" style="padding-left: 3.0em">
+            <a href="javascript:void(0)" (click)='onNoPatient()' id="NoPatientLnk">No Patient</a>
+        </div>
+        <div class="form-group" style="padding-left: 3.0em">
+            <a class="btn btn-link" data-toggle="modal" data-target="#add_patient_modal" (click)="onAddPatient()" id="AddPatientLnk">Add Patient</a>
+        </div>
+    </form>
+</ng-template>
+<ng-template #listPTemplate>
+    <div class="row">
+        <div class="col-3">
+            <label for="patientName">Patient Name: </label>
+            &nbsp;&nbsp; {{selectedPatient.fullName}}
+        </div>
+        <ng-container *ngIf="!isNoPatient; then isPatientTemplate; else isNoPatientTemplate"></ng-container>
+        <ng-template #isPatientTemplate>
+            <div class="col-3">
+                <label for="mrnNo">MRN Number: </label>
+                &nbsp;&nbsp; {{selectedPatient.mrnNo}}
+            </div>
+            <div class="col-3">
+                <label for="dob">Date of Birth: </label>
+                &nbsp;&nbsp; {{selectedPatient.dob}}
+            </div>
+            <div class="col">
+                <a href="javascript:void(0);" (click)='onChangePatient()' id="ChangePatientLnk">Change Patient</a>
+            </div>
+        </ng-template>
+        <ng-template #isNoPatientTemplate>
+            <div class="col">
+                <a href="javascript:void(0);" (click)='onSelectPatient()' id="SelectPatientLnk">Select Patient</a>
+            </div>
+        </ng-template>
+    </div>
+</ng-template>
+<app-add-batch-add-patient #app_add_batch_add_patient (onPatientSelected)="onPatientSelected($event)"></app-add-batch-add-patient>

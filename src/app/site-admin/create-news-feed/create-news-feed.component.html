@@ -1,0 +1,92 @@
+<div>
+  <div>
+
+    <div class=row>
+      <div class=col>
+        <form name="newsFeedForm" class="form-group" [formGroup]="newsFeedForm" (ngSubmit)="onSubmit()">
+          <fieldset>
+            <div class=row>
+              <div class="col-8 pb-3">
+                <alert></alert>
+                Please enter all of the criteria below to Edit/Publish a News Feed
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-8">
+                <div class=form-field>
+                  <label for=header>Heading:</label>
+                  <input type="text" id="header" name="header" formControlName="header" placeholder="Heading" class="form-control" maxlength="50"
+                    [ngClass]="{' ng-touched ng-invalid': !validateHeader()}">
+                  <div *ngIf="headerErrMsg != null" class="error-block">
+                    <span>{{headerErrMsg}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="padding-top: 1rem;">
+              <div class="col-8">
+                <div class=form-field>
+                  <label for=postedBy>Posted By:</label>
+                  <input type="text" id=postedBy name=postedBy formControlName="postedBy" placeholder="Posted By" class="form-control" maxlength="40"
+                    [ngClass]="{' ng-touched ng-invalid': !validatePostedBy()}">
+                  <div *ngIf="postedByErrMsg != null" class="error-block">
+                    <span>{{postedByErrMsg}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="padding-top: 1rem;" *ngIf="newsFeed != null">
+              <div class="col-8">
+                <div class=form-field>
+                  <label style="display:inline;">Posted Date: </label>{{newsFeed.postedDate | date:'dd-MMM-yyyy HH:mm'}}
+                </div>
+              </div>
+            </div>
+            <div class="row" style="padding-top: 1rem;">
+              <div class="col-8">
+                <div class=form-field>
+                  <label for=postedBy>Short Description:</label>
+                  <quill-editor [modules]="shortDescModules" [(ngModel)]='shortDesc' (onContentChanged)="onShortDescChanged($event)" formControlName="shortDesc" 
+                    placeholder="Enter text here..." [style]="{height: '75px', width: '810px'}">
+                  </quill-editor>
+                  <div *ngIf="!shortDescValid" class="error-block">
+                    <span>{{shortByErrMsg}}</span>
+                  </div>
+                  <span class='news-feed-small-text'>{{shortDesc? shortDesc.length + '/200 characters' : ''}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row" style="padding-top: 1rem;">
+              <div class="col-8">
+                <div class=form-field>
+                  <label for=postedBy>Long Description:</label>
+                  <quill-editor [modules]="longDescModules" [(ngModel)]='longDesc' (onContentChanged)="onLongDescChanged($event)" formControlName="longDesc" 
+                    placeholder="Enter text here..." [style]="{height: '200px', width: '810px'}">
+                  </quill-editor>
+                  <div *ngIf="!longDescValid" class="error-block">
+                    <span>{{longByErrMsg}}</span>
+                  </div>
+                  <span class='news-feed-small-text'>{{longDesc? longDesc.length + '/3000 characters' : ''}}</span>
+                </div>
+              </div>
+            </div>
+
+          </fieldset>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <div class="row text-center">
+    <div class="col-8">
+      <button type="button" class="btn btn-link" (click)="onCancel()">Cancel</button>
+      <ng-container *ngIf="(newsFeedForm.valid && shortDescValid && longDescValid); then validFormTemplate; else invalidFormTemplate"></ng-container>
+      <ng-template #validFormTemplate>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">Publish</button>
+      </ng-template>
+      <ng-template #invalidFormTemplate>
+        <button type="button" class="btn btn-primary" disabled>Publish</button>
+      </ng-template>
+    </div>
+  </div>
+</div>

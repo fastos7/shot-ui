@@ -1,0 +1,54 @@
+<div class="mat-elevation-z8">
+    <mat-table #table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="Product Description">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'pd-cell'">Product Description</mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'pd-cell'" [innerHTML]="element | formatDisplayProductDescription"></mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="Diluent / Container">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'dm-cell'">Diluent / Container</mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'dm-cell'">{{element.deliveryMechanismDescription}}{{element.closedSystem?'':', No Closed System'}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="Volume">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'vol-cell'">Volume</mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'vol-cell'">{{element.specifiedVolume | formatVolume : element.exact}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="Quantity">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'qty-cell'">Qty</mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'qty-cell'">{{element.quantity}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="RoA">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'roa-cell'">RoA</mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'roa-cell'">{{element.routeName!==null && element.routeName!==''?element.routeName:'-'}}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="Inf Duration">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'inf-cell'">Inf Duration</mat-header-cell>
+          <mat-cell *matCellDef="let element" [ngClass]="'inf-cell'">{{element.infusionDuration | formatInfDuration}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Batch#, Expiry Date">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'bat-exp-cell'">Batch#, Expiry Date </mat-header-cell>
+          <mat-cell *matCellDef="let element" [ngClass]="'bat-exp-cell'">{{element.batchId!==null && element.batchId!==''?element.batchId:'-'}}, {{element.expiryDate!==null && element.expiryDate!==''?element.expiryDate:'-'}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="OrdNo">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'ordNo-cell'">Order#</mat-header-cell>
+          <mat-cell *matCellDef="let element" [ngClass]="'ordNo-cell'">{{element.ordNo!==null && element.ordNo!==''?element.ordNo:'-'}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Status">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'status-cell'">Status</mat-header-cell>
+          <mat-cell *matCellDef="let element" [ngClass]="'status-cell'">{{element.status!==null && element.status!==''?element.status:'-'}}</mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;let element" class="{{element.status}} mat-row" (click)="showBatchDetails(element)"></mat-row>
+    </mat-table>
+  
+  </div>
+

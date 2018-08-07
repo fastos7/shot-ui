@@ -1,0 +1,125 @@
+@import "../../../assets/scss/_variables";
+
+.mat-table{
+  font-size: $shFontSizeExtraSm;
+  font-family: inherit;
+}
+
+.mat-header-row{
+  border-bottom: 3px solid $white;
+  padding: 0px 10px;  
+}
+.mat-row{
+  border-bottom: 3px solid $white;
+  padding: 10px 10px 0px;
+  align-items: start;
+  min-height: 20px;
+}
+
+.mat-cell{
+  font-size: inherit;
+}
+.mat-header-row { border-bottom: 2px solid #ccc !important; }
+.mat-elevation-z8{  padding:10px;   box-shadow: 0 5px 5px -3px rgba(0,0,0,.2), 0 0px 0px 1px rgba(0,0,0,.14), 0 3px 14px 2px rgba(0,0,0,.12)}
+
+.mat-column-productNameForNoPatientName {
+  flex: 0 20% ;
+}
+
+.mat-column-deliveryMechanismForNoPatientName {
+  flex: 0 16% ;
+}
+
+.mat-column-volumeForNoPatientName {
+  flex: 0 8% ;
+}
+
+.mat-column-routeForNoPatientName {
+  flex: 0 10% ;
+}
+
+.mat-column-quantityForNoPatientName {
+  flex: 0 3% ;
+}
+
+.mat-column-deliverToForNoPatientName {
+  flex: 0 14% ;
+}
+
+.mat-column-deliverAtForNoPatientName {
+  flex: 0 14% ;
+}
+
+.mat-column-statusForNoPatientName {
+  flex: 0 5% ;
+}
+
+.mat-column-commentsForNoPatientName {
+  flex: 0 10% ;
+}
+
+.mat-column-productName {
+  flex: 0 18% ;
+}
+
+.mat-column-deliveryMechanism {
+  flex: 0 16% ;
+}
+
+.mat-column-volume {
+  flex: 0 8% ;
+}
+
+.mat-column-route {
+  flex: 0 10% ;
+}
+
+.mat-column-quantity {
+  flex: 0 3% ;
+}
+
+.mat-column-deliverTo {
+  flex: 0 14% ;
+}
+
+.mat-column-deliverAt {
+  flex: 0 14% ;
+}
+
+.mat-column-status {
+  flex: 0 7% ;
+}
+
+.mat-column-comments {
+  flex: 0 10% ;
+}
+
+.order_w_no_patient_header_bottom_border {
+  border-bottom: 1px solid $borderPrimary;
+  background-color: $tableHeaderBgColor;
+}
+
+.btn.disabled {
+  cursor : not-allowed;
+  opacity: 1;
+ 
+}
+
+.text-disabled {
+  color: #8E908F
+}
+
+.new_order_container {
+  width:100%; 
+  overflow-x:hidden;
+  min-height:600px;
+}
+
+.new_order_animation_container {
+  width:200%;
+}
+
+.new_order_panel {
+  width:50%; 
+  float:left;
+}

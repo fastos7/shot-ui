@@ -1,0 +1,50 @@
+@import "../../../assets/scss/_variables";
+
+ /* For Firefox */
+ input[type='number'] {
+    -moz-appearance:textfield;
+}
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+::ng-deep .cdk-overlay-container{
+    z-index: 1200 !important;
+}
+
+option:disabled {
+    color: #ccc;    
+    font-style: italic;    
+}
+
+.mat-datepicker-toggle {
+    position: absolute;
+    right: 10px;
+    top: 0px;
+}
+
+.dose-size {
+    width: 80%;
+    display: inline;
+}
+
+.volume-size {
+    width: 75%;
+    display: inline;
+}
+
+.infusionDuration-size {
+    width: 80%;
+    display: inline;
+}
+
+::ng-deep .mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: $shBlue;
+}
+
+::ng-deep .mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: rgba(0,91,187,.5);
+}

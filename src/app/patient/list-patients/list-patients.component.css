@@ -1,0 +1,21 @@
+.ps-surname-cell{
+    flex: 0 15%;
+}
+.ps-fname-cell{
+    flex: 0 15%;
+}
+.ps-mrn-ur-cell{
+    flex: 0 23%;
+}
+.ps-dob-cell{
+    flex: 0 8%;
+}
+.ps-status-cell{
+    flex: 0 6%;
+}
+.ps-trailID-cell{
+    flex: 0 23%;
+}
+.ps-actions-cell{
+    flex: 0 10%;
+}

@@ -1,0 +1,29 @@
+<div class="form-group" [formGroup]="form">
+    <label for="deliveryDateTime">Delivery Date and Time: </label>
+    <!--<ng-template ngIf="deliveryLoading === true">
+        <img style="width:5%; height:5%" src="../../../../assets/images/loading.gif"/>
+    </ng-template>-->
+    <select class="form-control inline-display mb-0" name="deliveryDateTime" id="deliveryDateTime" [formControlName]=DELIVERY_DT [compareWith]="compareDeliveryDateTime"
+        (change)='onDeliveryDateSelected($event.target.value)'
+        style="width : 80%; display : inline;">
+        <ng-template ngFor let-deliveryDt [ngForOf]="deliveryDateTimes" let-dti="index">
+            <option 
+                [ngClass]="{'text-warning':!deliveryDt.withinCutOff1Time && deliveryDt.value != '',
+                            'text-success': deliveryDt.withinCutOff1Time && deliveryDt.value != '',
+                            'font-italic font-weight-bold': deliveryDt.value == ''
+                           }"
+                [ngValue]="deliveryDt">
+                {{ deliveryDt.value == ''? 'Request Special Delivery Time': (toDate(deliveryDt.value) | date:'EE, dd MMM yyyy HH:mm')}}
+                {{ deliveryDt.withinIncentiveCutoffTime? ' ($)' : ''}} {{ (!deliveryDt.withinCutOff1Time && deliveryGroup.displayIsRestrictedFlag == true)? ' (R)' : ''}}
+            </option>
+        </ng-template>
+    </select>
+    &nbsp;<i  *ngIf="isLoading" class="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+    &nbsp;<img src="../../../assets/images/incentive.png" *ngIf="hasIncentive"/>
+    <div *ngIf="!validateDeliveryDateTime()" class="error-block">
+        <span>{{DELIVERY_DT_ERROR}}</span>
+    </div>
+    <div *ngIf="isSpecialDeliveryRun" class="text-success">
+        <span>Please contact <strong>{{ deliveryGroup.facilityName }}</strong> on {{ deliveryGroup.facilityContactNo }}. Additional charges may apply. </span>
+    </div>
+</div>

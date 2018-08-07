@@ -1,0 +1,65 @@
+<h6 class="pt-3">Bulk Add Patients</h6>
+<div class=row>
+  <div class=col-12>
+    <alert id=uploadPatientAlert></alert>
+  </div>
+</div>
+<div class=row *ngIf="!arePatientsAdded">
+  <div class=col-12>
+      <div class="row pb-3">
+          <div class=col-12>
+            <div class="bodyText">
+              Please select a file to upload and add your patients to the system.
+            </div>
+          </div>
+        </div>
+        <div class="row pb-5">
+          <div class="col-4">
+            <form [formGroup]='uploadPatientsForm' class=form-group role="form">
+              <div class="input-group">
+                <input type="text" class="form-control" readonly value="{{uploadPatientsFile != null ? uploadPatientsFile.name : ''}}">
+                <label class="input-group-btn">
+                  <span class="btn btn-primary">
+                    <input type="file" style="display: none;" formControlName="uploadPatientFile" id="uploadPatientFile"
+                      name="uploadPatientFile" #uploadPatientFile (change)="selectUploadPatientFile($event)"
+                      accept=".csv, text/csv">Browse
+                  </span>
+                </label>
+              </div>
+            </form>
+          </div>
+          <div class="col-3">
+              <button class="btn btn-primary" class="btn btn-primary" (click)="validateFile()">Validate File</button>
+          </div>
+        </div>
+        <hr>
+        <div class=row>
+          <div class=col-9>
+              {{displaySearchMessage}}
+          </div>
+        </div>
+        <div class=row *ngIf="showPatientToBeAdded">
+          <div class="col-6 text-right">
+              <a class="btn btn-link" (click)='alert(1)'>NO, Discard and upload another file</a>
+              <button class="btn btn-primary" (click)="uploadPatients()">YES, Add these patients</button>
+          </div>
+        </div>
+        <div class=row *ngIf="showErrorsFromValidateFile">
+          <div class="col-9">
+            <ul class="errors">
+              <li *ngFor="let errorMessage of errors.errorMessages; let i = index">{{errorMessage}}</li>
+            </ul>
+          </div>
+        </div>
+        <app-list-patients *ngIf="showPatientToBeAdded" [patientList]="patientsFromFile" [patientCount]="patientsFromFile.length" [showActionsColumn]="false"></app-list-patients>
+  </div>
+</div>
+<div class="row" *ngIf="arePatientsAdded">
+  <div class=col-12>
+    <app-list-patients *ngIf="showPatientAdded" [patientList]="patientsAdded" [patientCount]="patientsAdded.length" [showActionsColumn]="false"></app-list-patients>
+  </div>
+  <div class="col-6 p-3">
+    <button class="btn btn-primary" (click)="resetUploadScreen()">Upload Another File</button>
+    <button class="btn btn-primary" (click)="gotoSearch()">Search Patients</button>
+  </div>
+</div>

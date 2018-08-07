@@ -1,0 +1,5 @@
+<ng2-completer [(ngModel)]="searchPatientStr" [ngModelOptions]="{standalone: true}" [datasource]="remoteDataService" [minSearchLength]="3"
+  [matchClass]="'match'" [pause]="400" textNoResults="No Patients found" textSearching="Searching Patients..." placeholder="Patient Name / MRN"
+  [inputClass]="'form-control'" class="completer-limit" [initialValue]="searchPatientStr" (selected)='onPatientSelected($event)' [inputId]="'SearchPatient'"
+  #searchPatientComp>
+</ng2-completer>

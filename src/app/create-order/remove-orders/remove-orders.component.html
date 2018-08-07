@@ -1,0 +1,176 @@
+<div id="remove_orders_modal" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static" #remove_orders_modal>
+  <div class="modal-dialog">  
+
+    <div class="modal-content">         
+      <div class="modal-header">
+        <h5 >Delete Orders</h5>        
+      </div>
+
+      <div style="width:200%;">
+
+        <div style="width:50%; float:left;" [@batchesListVisibilityChanged]="batchesListVisibility">
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col mb-2 ml-2">Please select the product order you would like to remove for this patient and then click remove. <br/>
+                    Click cancel to discard removal and go back to the previous screen</div>
+              </div>          
+              <div class="row">
+                <div class="col-12 pl-4 pr-4 pb-3 pt-1">
+                    <div class="mat-elevation-z8">
+                
+                        <!-- Begin Material table for listing Non-Patient Orders -->  
+                        <mat-table #table [dataSource]="convertToMaterialDatasource(getBatchesForPatient(patiendId))">
+            
+                            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+                            <ng-container matColumnDef="select">
+                              <mat-header-cell *matHeaderCellDef class="text-left">
+                                  <input type="checkbox"
+                                         class="mr-0"    
+                                         name="" 
+                                         value="true"
+                                         (click)="toggleCheckboxes($event)"
+                                         #select_all_checkbox/>
+                                      All
+                              </mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="text-left">
+                                  <input type="checkbox" 
+                                         name="" 
+                                         value="true" 
+                                         attr.batchId="{{element.batchId}}"
+                                         (click)="selectCheckbox($event)"
+                                         #checkboxes/>
+                              </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="productName">
+                              <mat-header-cell *matHeaderCellDef class="text-left">Product Name</mat-header-cell>
+                              <mat-cell *matCellDef="let element" class="text-left" [innerHtml]="element | formatProductDescription"></mat-cell>
+                            </ng-container>
+                 
+                            <ng-container matColumnDef="deliveryMechanism">
+                                <mat-header-cell *matHeaderCellDef class="text-left">Diluent / Container</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left">{{element | formatPreferenceDiluentContainer}}</mat-cell>
+                            </ng-container>
+                            
+                            <ng-container matColumnDef="volume">
+                                <mat-header-cell *matHeaderCellDef class="text-left pl-2">Volume</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.volume | formatVolume : element.exact}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="route">
+                                <mat-header-cell *matHeaderCellDef class="text-left pl-2">Route</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left pl-2">{{element | formatRoute}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="quantity">
+                                <mat-header-cell *matHeaderCellDef class="text-right">Qty</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-right">{{element.quantity}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="deliverTo">
+                                <mat-header-cell *matHeaderCellDef class="text-left pl-2">Deliver To</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.deliveryLocation.locationName}}</mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="deliverAt">
+                                <mat-header-cell *matHeaderCellDef class="text-left">Deliver At</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left">{{element.deliveryDateTime.value | date:'dd-MM-yyyy HH:mm:ss'}}
+                                    <img *ngIf="element.deliveryDateTime.withinIncentiveCutoffTime" 
+                                        src="../../../assets/images/incentive.png"
+                                        width="25px"/>                               
+                                </mat-cell>
+                            </ng-container>
+
+                          
+                            
+                        </mat-table>                        
+                        <!-- End Material table for listing Non-Patient Orders -->  
+    
+                    </div>
+                </div>
+              </div> 
+          </div>  
+          <div class="modal-footer">        
+            <button type="button" class="btn btn-link" data-dismiss="modal" (click)="OnCancel()" id="Cancel1Btn">CANCEL</button>
+            <button type="button" class="btn btn-link" [disabled]="selectedBatches.length <= 0" (click)="OnNext()" id="NextBtn">NEXT</button>
+          </div>
+        </div>
+
+        <div style="width:50%; float:left;" [@batchesTobeDeletedVisibilityChanged]="batchesTobeDeletedListVisibility">
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col mb-3 ml-2">You have selected the following products to be removed from the listed patient below.<br/>
+                  Click remove selected to remove these items or cancel to discard removal.
+                  </div> 
+              </div>          
+              <div class="row">
+                  <div class="col-12 pl-4 pr-4 pb-3 pt-1">
+                      <div class="mat-elevation-z8">
+                  
+                          <!-- Begin Material table for listing Non-Patient Orders -->  
+                          <mat-table #table [dataSource]="convertToMaterialDatasource(selectedBatches)">
+              
+                              <mat-header-row *matHeaderRowDef="displayedColumnsForSelectedBatches"></mat-header-row>
+                              <mat-row *matRowDef="let row; columns: displayedColumnsForSelectedBatches;"></mat-row>
+  
+                              <ng-container matColumnDef="productNameForSelectedBatches">
+                                <mat-header-cell *matHeaderCellDef class="text-left">Product Name</mat-header-cell>
+                                <mat-cell *matCellDef="let element" class="text-left" [innerHtml]="element | formatProductDescription"></mat-cell>
+                              </ng-container>
+                  
+                              <ng-container matColumnDef="deliveryMechanismForSelectedBatches">
+                                  <mat-header-cell *matHeaderCellDef class="text-left pl-2">Diluent / Container</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" class="text-left pl-2">{{element | formatPreferenceDiluentContainer}}</mat-cell>
+                              </ng-container>
+                              
+                              <ng-container matColumnDef="volumeForSelectedBatches">
+                                  <mat-header-cell *matHeaderCellDef class="text-left pl-2">Volume</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.volume | formatVolume : element.exact}}</mat-cell>
+                              </ng-container>
+  
+                              <ng-container matColumnDef="routeForSelectedBatches">
+                                  <mat-header-cell *matHeaderCellDef class="text-left">Route</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" class="text-left">{{element | formatRoute}}</mat-cell>
+                              </ng-container>
+  
+                              <ng-container matColumnDef="quantityForSelectedBatches">
+                                  <mat-header-cell *matHeaderCellDef class="text-right">Qty</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" class="text-right">{{element.quantity}}</mat-cell>
+                              </ng-container>
+  
+                              <ng-container matColumnDef="deliverToForSelectedBatches">
+                                  <mat-header-cell *matHeaderCellDef class="text-left pl-2">Deliver To</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" class="text-left pl-2">{{element.deliveryLocation.locationName}}</mat-cell>
+                              </ng-container>
+  
+                              <ng-container matColumnDef="deliverAtForSelectedBatches">
+                                  <mat-header-cell *matHeaderCellDef class="text-left">Deliver At</mat-header-cell>
+                                  <mat-cell *matCellDef="let element" class="text-left">{{element.deliveryDateTime.value | date:'dd-MM-yyyy HH:mm:ss'}}
+                                      <img *ngIf="element.deliveryDateTime.withinIncentiveCutoffTime" 
+                                          src="../../../assets/images/incentive.png"
+                                          width="25px"/>                               
+                                  </mat-cell>
+                              </ng-container>
+  
+                            
+                              
+                          </mat-table>                        
+                          <!-- End Material table for listing Non-Patient Orders -->  
+      
+                      </div>
+                  </div>
+                </div>              
+          </div>  
+          <div class="modal-footer">        
+            <button type="button" class="btn btn-link" data-dismiss="modal" #cancelBtn (click)="OnCancel()" id="Cancel2Btn">CANCEL</button>
+            <button type="button" class="btn btn-link" (click)="OnBack()" id="BackBtn">BACK</button>
+            <button type="button" class="btn btn-link" (click)="OnRemoveSelected()" id="RemoveSelectedBtn">REMOVE SELECTED</button>
+          </div>
+        </div>
+      </div>      
+    </div> 
+    
+  </div> 
+</div>  

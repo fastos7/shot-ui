@@ -1,0 +1,201 @@
+<div class=row>
+  <div class=col-8>
+    <div class="row">
+        <div class="col">
+            <h4>Our Locations</h4>
+        </div>
+    </div>    
+    <div class="row">
+      <div class="loc-state-container col-12">
+          <div class="state-container pt-0 clearfix">
+              <div class="state-hdr">NSW</div>
+              <div class="location-container clearfix width-half pull-left">
+                <div class="location-name">Mount Kuring-gai</div>
+                <div class="detail-container clearfix">
+                  <div class="detail-hdr">Address:</div>
+                  <div class="detail">Level 1, 2 Woodland Way,<br/>Mount Kuring-gai NSW 2080</div>
+                </div>
+                <div class="detail-container clearfix">
+                  <div class="detail-hdr">Telephone:</div>
+                  <div class="detail">1800 988 082</div>
+                </div>
+                <div class="detail-container clearfix">
+                  <div class="detail-hdr">Fax:</div>
+                  <div class="detail">1800 996 684</div>
+                </div>
+                <div class="detail-container clearfix">
+                  <div class="detail-hdr">Email:</div>
+                  <div class="detail"><a class="btn btn-link" href="mailto:orders.sydney@sladehealth.com.au?subject=Sydney Orders">orders.sydney@sladehealth.com.au</a></div>
+                </div>
+              </div>
+              <div class="location-container clearfix width-half pull-left">
+                <div class="location-name">Morisset</div>
+                <div class="detail-container clearfix">
+                  <div class="detail-hdr">Address:</div>
+                  <div class="detail">6/18-20 Accolade Avenue,<br/>Morisset NSW 2264</div>
+                </div>
+                <div class="detail-container clearfix">
+                  <div class="detail-hdr">Telephone:</div>
+                  <div class="detail">02 4970 4473</div>
+                </div>
+                <div class="detail-container clearfix">
+                  <div class="detail-hdr">Fax:</div>
+                  <div class="detail">02 4970 4476</div>
+                </div>
+                <div class="detail-container clearfix">
+                  <div class="detail-hdr">Email:</div>
+                  <div class="detail"><a class="btn btn-link" href="mailto:orders.morisset@sladehealth.com.au?subject=Morisset Orders">orders.morisset@sladehealth.com.au</a></div>
+                </div>
+              </div>
+            </div>        
+      </div>
+      <div class="loc-state-container col-12">
+        <div class="state-container clearfix width-half pull-left">
+          <div class="state-hdr">Queensland</div>
+          <div class="location-container clearfix">
+            <div class="location-name">Geebung</div>
+            <div class="detail-container clearfix">
+              <div class="detail-hdr">Address:</div>
+              <div class="detail">Unit 11, 210 Robinson Road East,<br/>Geebung, QLD 4034</div>
+            </div>
+            <div class="detail-container clearfix">
+              <div class="detail-hdr">Telephone:</div>
+              <div class="detail">1800 740 749</div>
+            </div>
+            <div class="detail-container clearfix">
+              <div class="detail-hdr">Fax:</div>
+              <div class="detail">1800 842 849</div>
+            </div>
+            <div class="detail-container clearfix">
+              <div class="detail-hdr">Email:</div>
+              <div class="detail"><a class="btn btn-link" href="mailto:oncology.brisbane@sladehealth.com.au?subject=Brisbane Orders">oncology.brisbane@sladehealth.com.au</a></div>
+            </div>
+          </div>
+        </div>
+        <div class="state-container clearfix width-half pull-left">
+          <div class="state-hdr">Victoria</div>
+          <div class="location-container clearfix">
+            <div class="location-name">Mount Waverley</div>
+            <div class="detail-container clearfix">
+              <div class="detail-hdr">Address:</div>
+              <div class="detail">14 Palmer Court,<br/>Mount Waverley, VIC 3149</div>
+            </div>
+            <div class="detail-container clearfix">
+              <div class="detail-hdr">Telephone:</div>
+              <div class="detail">03 9565 447</div>
+            </div>
+            <div class="detail-container clearfix">
+              <div class="detail-hdr">Fax:</div>
+              <div class="detail">03 8526 7424</div>
+            </div>
+            <div class="detail-container clearfix">
+              <div class="detail-hdr">Email:</div>
+              <div class="detail"><a class="btn btn-link" href="mailto:orders@sladehealth.com.au?subject=Orders">orders@sladehealth.com.au</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-4 email-us-container">
+    <div vlass="row ">
+      <div class="col-md-12 mx-auto contact-us-header">
+        <h4>Send us an email</h4>
+      </div>
+    </div>
+    <div class="contact-us-content" *ngIf="!recaptchaSuccess">
+        <div class=row>
+          <div class=col-12>
+              <form class=form-group role="form" [formGroup]="contactUsForm" novalidate>
+              <fieldset class="pt-0 pb-0">
+                <div class=row>
+                  <div class="col pb-3">
+                      Please fill in the details below and one of our representatives will respond to your query.
+                  </div>
+                </div>
+                <div class=row>
+                  <div class="col">
+                    <alert [id]="'contactUsErrors'"></alert>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class=col>
+                    <div class="form-field"> 
+                      <label for="cuName">Name :</label>                    
+                      <input type="text" class="form-control" formControlName="cuName" name="cuName" id="cuName" placeholder="Name">
+                      <div *ngIf="formErrors.cuName" class="help error-block">{{formErrors.cuName}}</div>
+                    </div> 
+                  </div>
+                </div>
+                <div class="row">
+                  <div class=col>
+                    <div class="form-field"> 
+                      <label for="cuEmail">Email :</label>                    
+                      <input type="text" class="form-control" formControlName="cuEmail" name="cuEmail" id="cuEmail" placeholder="Email">
+                      <div *ngIf="formErrors.cuEmail" class="help error-block">{{formErrors.cuEmail}}</div>
+                    </div> 
+                  </div>
+                </div>
+                <div class="row">
+                  <div class=col>
+                    <div class="form-field"> 
+                      <label for="cuPhoneNumber">Phone Number :</label>                    
+                      <input type="text" class="form-control" formControlName="cuPhoneNumber" name="cuPhoneNumber" id="cuPhoneNumber" placeholder="Phone Number">
+                      <div *ngIf="formErrors.cuPhoneNumber" class="help error-block">{{formErrors.cuPhoneNumber}}</div>
+                    </div> 
+                  </div>
+                </div>
+                <div class="row">
+                  <div class=col>
+                    <div class="form-field"> 
+                      <label for="cuReason">Reason :</label>                    
+                      <select class="form-control" formControlName="cuReason" name="cuReason" id="cuReason">
+                        <option value="Account setup questions">Account setup questions</option>
+                        <option value="Become a customer">Become a customer</option>
+                        <option value="Feedback">Feedback</option>
+                        <option value="Ordering issues">Ordering issues</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <div *ngIf="formErrors.cuReason" class="help error-block">{{formErrors.cuReason}}</div>
+                    </div> 
+                  </div>
+                </div>
+                <div class="row">
+                  <div class=col>
+                    <div class="form-field"> 
+                      <label for="cuDetailedDesc">Detailed Description :</label>                    
+                      <textarea class="form-control" rows="3" formControlName="cuDetailedDesc" name="cuDetailedDesc" id="cuDetailedDesc" placeholder="provide detailed description of the reason you are contacting us about"></textarea>
+                    </div> 
+                  </div>
+                </div>
+                <div class=row>
+                  <div class=col>
+                    <div class=form-field>
+                        <re-captcha #recaptcha (captchaResponse)="handleCorrectCaptcha($event)" (captchaExpired)="onCaptchaExpired()" site_key="{{googleSiteKey}}"></re-captcha>
+                        <div *ngIf="recaptchaError" class="help error-block">Please check the box and submit again!</div>
+                      </div>
+                  </div>
+                </div>
+                <div class=row>
+                  <div class=col>
+                    <button type="button" class="btn btn-primary" (click)="onSubmit()">Submit</button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+    </div>
+    <div class="contact-us-success-container">
+      <div class=row>
+        <div class=col-12>
+          <div class=row>
+            <div class="col pt-3 ml-3 mr-3">
+              <alert [id]="'emailSentAlert'"></alert>
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

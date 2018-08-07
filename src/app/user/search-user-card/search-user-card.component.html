@@ -1,0 +1,26 @@
+<div class="col-12 p-3">
+  <div class="user-card clearfix" [ngClass]="{'user-card-active':user.isActive, 'user-card-inactive':!user.isActive}">
+    <div class="user-card-header clearfix">
+      <div class="user-detail-container width-33">
+        <span class=user-det-lbl>{{user.lastName | uppercase}}, {{user.firstName | uppercase}}
+          <span class="highlighted-label">{{user.isShotAdmin? '(SLADE ADMIN)':''}}</span>
+        </span>
+      </div>
+      <div class="user-detail-container width-33">
+        <span class=user-det-lbl>Email :</span>
+        <span class=user-det-data>{{user.email}}</span>
+      </div>
+      <div class="user-detail-container width-15">
+        <span class=user-det-lbl>Status :</span>
+        <span class="user-det-data" [ngClass]="{'user-status-active':user.isActive, 'user-status-inactive':!user.isActive}">
+          <b>{{user.isActive? 'ACTIVE':'INACTIVE'}}</b>
+        </span>
+      </div>
+      <div class="user-detail-action pull-right">
+          <a class="btn btn-link" href="javascript:void(0);" (click)="editUser(user)">Edit</a>
+          <a class="btn btn-link" href="javascript:void(0);" (click)="deleteUser(user)">Delete</a>
+      </div>
+    </div>
+    <app-search-user-sites-card [userSites]="user.userAuthorities"></app-search-user-sites-card>
+  </div>
+</div>

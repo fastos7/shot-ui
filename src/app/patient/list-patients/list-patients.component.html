@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-6">
+      <alert [id]="'listPatientsAlert'"></alert>
+  </div>
+</div>
+<div class="row">                    
+  <div class="col-12 padPatListTab">
+    <h6 class=pb-2>{{displaySearchMessage}}</h6>
+    <div class="mat-elevation-z8" [ngClass]="{'invisible' : !showPatientListTable}">
+      <mat-table #table [dataSource]="dataSource">
+    
+        <!-- Sur Name Column -->
+        <ng-container matColumnDef="surName">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'ps-surname-cell'"> Surname </mat-header-cell>
+          <mat-cell *matCellDef="let element" [ngClass]="'ps-surname-cell'"> {{element.surName!==null && element.surName!==''?element.surName:'-'}} </mat-cell>
+        </ng-container>
+    
+        <!-- First Name Column -->
+        <ng-container matColumnDef="firstName">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'ps-fname-cell'"> First Name </mat-header-cell>
+          <mat-cell *matCellDef="let element" [ngClass]="'ps-fname-cell'"> {{element.firstName!==null && element.firstName!==''?element.firstName:'-'}} </mat-cell>
+        </ng-container>
+    
+        <!-- MRN / UR Column -->
+        <ng-container matColumnDef="ur">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'ps-mrn-ur-cell'"> MRN / UR </mat-header-cell>
+          <mat-cell *matCellDef="let element" [ngClass]="'ps-mrn-ur-cell'"> {{element.ur!==null && element.ur!==''?element.ur:'-'}} </mat-cell>
+        </ng-container>
+    
+        <!-- Date Of Birth Column -->
+        <ng-container matColumnDef="dob">
+          <mat-header-cell *matHeaderCellDef [ngClass]="'ps-dob-cell'"> Date Of Birth </mat-header-cell>
+          <mat-cell *matCellDef="let element" [ngClass]="'ps-dob-cell'"> {{element.dob!==null?element.dob:'-'}} </mat-cell>
+        </ng-container>
+    
+        <!-- Active Column -->
+        <ng-container matColumnDef="active">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'ps-status-cell'"> Status </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'ps-status-cell'"> {{element.active?'Active':'Inactive'}} </mat-cell>
+        </ng-container>
+
+        <!-- Trail Id Column -->
+        <ng-container matColumnDef="trialId">
+            <mat-header-cell *matHeaderCellDef [ngClass]="'ps-trailID-cell'"> Trial ID </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'ps-trailID-cell'"> {{element.trialId!==null && element.trialId!==''?element.trialId:'-'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Actions" *ngIf='showActionsColumn'>
+            <mat-header-cell *matHeaderCellDef [ngClass]="'ps-actions-cell'"> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let element" [ngClass]="'ps-actions-cell'">
+              <a class="btn btn-link" data-toggle="modal" data-target="#edit_patient_modal" (click)="onEdit(element)">Edit</a>
+              <!--a class="btn btn-link" href=#>Add to merge</a-->
+            </mat-cell>
+        </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    
+      <mat-paginator #paginator
+                    [pageSize]="10"
+                    [pageSizeOptions]="[5, 10, 20]">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

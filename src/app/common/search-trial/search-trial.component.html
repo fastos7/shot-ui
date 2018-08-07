@@ -1,0 +1,14 @@
+<ng2-completer [(ngModel)]="searchTrialStr"               
+               [datasource]="remoteDataService"  
+               [minSearchLength]="3" 
+               [matchClass]="'match'"               
+               [pause]="500" 
+               textNoResults="No Trials found"
+               textSearching="Searching Trials..."
+               placeholder="Trial"
+               [inputClass]=" isValid ? 'form-control' : 'form-control ng-invalid ng-touched'"               
+               class="completer-limit" 
+               [initialValue]="searchTrialStr"  
+               (selected)='onTrialSelected($event)'               
+               [inputId]="trialSearchId">
+</ng2-completer>  

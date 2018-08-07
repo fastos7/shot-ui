@@ -1,0 +1,6 @@
+<ng-template [ngIf]="!displayUser">
+  <app-create-user [user]='user' [sites]="sites" [roles]="roles" (cancel)="searchUser()"></app-create-user>
+</ng-template>
+<ng-template [ngIf]="displayUser">
+  <app-display-user [user]='user'></app-display-user>
+</ng-template>

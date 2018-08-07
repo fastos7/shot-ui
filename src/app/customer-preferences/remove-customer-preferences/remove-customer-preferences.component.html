@@ -1,0 +1,77 @@
+<div id="remove_customer_preference_modal" class="modal fade" role="dialog" role="dialog" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog">    
+    <div class="modal-content">         
+      <div class="modal-header">
+        <h5 >Delete Customer Preferences</h5>        
+      </div>
+      <div class="modal-body">
+          <div class="row">
+              <div class="col mb-3">
+                Are you sure you would like to delete the below preference from the system? 
+              </div> 
+         </div> 
+
+         <div class="row">            
+          <div class="col-12">
+              <div class="mat-elevation-z8">
+        
+                  <mat-table #table [dataSource]="convertToMaterialDatasource(customerPreferencesToBeDeleted)">
+                    
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        
+                    <ng-container matColumnDef="rank">
+                        <mat-header-cell *matHeaderCellDef>Rank</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.rank}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="doseRange">
+                        <mat-header-cell *matHeaderCellDef>Dose Range</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element | formatPreferenceDoseRange}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="diluentContainer">
+                        <mat-header-cell *matHeaderCellDef>Diluent / Container</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element | formatPreferenceDiluentContainer}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="route">
+                        <mat-header-cell *matHeaderCellDef>Route</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.administrationRoute ? element.administrationRoute.description : "-"}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="volume">
+                        <mat-header-cell *matHeaderCellDef>Volume</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.volume  | formatVolume}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="exact">
+                        <mat-header-cell *matHeaderCellDef>Exact</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.exact | formatPreferenceExact}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="quantity">
+                        <mat-header-cell *matHeaderCellDef>Quantity</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.quantity ? element.quantity : "-"}}</mat-cell>
+                    </ng-container>
+        
+                    <ng-container matColumnDef="infusionDuration">
+                        <mat-header-cell *matHeaderCellDef>Infusion Duration</mat-header-cell>
+                        <mat-cell *matCellDef="let element">{{element.infusionDuration ? (element.infusionDuration + " hours") : "-"}}</mat-cell>
+                    </ng-container>
+        
+                  </mat-table>
+        
+                </div>
+          </div>
+        </div> 
+
+          <alert [id]="'deleteCustomerPreferenceAlert'"></alert> 
+      </div>  
+      <div class="modal-footer">        
+        <button type="button" class="btn btn-link" data-dismiss="modal" #noBtn (click)="OnCancel()" id="NoBtn">No</button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()" id="SubmitBtn">Yes</button>
+      </div>
+    </div>    
+  </div> 
+</div>

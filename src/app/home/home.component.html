@@ -1,0 +1,91 @@
+<h5>Start here</h5>
+<div class="row text-lg-center">
+    <div class="d-inline-flex mx-auto" *ngFor="let homePageAction of homePageActions">
+        <div class="border-1 rounded mx-5 mt-3 mb-3 landing-item" *ngIf="isPermissionsInitialized() && hasPermisson(homePageAction.webPageUrl)">
+            <a href="/{{homePageAction.webPageUrl}}">
+                <div class="m-5 logo" *ngIf="homePageAction.iconName == ''">
+                    <i class="fa fa-4x fa-question"></i>                    
+                </div>
+                <div class="m-5 logo" *ngIf="homePageAction.iconName != ''">                        
+                        <img src="{{'../assets/images/' + homePageAction.iconName}}"/>
+                    </div>
+                <div class="footer">
+                    <a href="/{{homePageAction.webPageUrl}}">{{homePageAction.webPageName}}</a>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- <div class= "d-inline-flex mx-auto ">
+        
+        <div class="border-1 rounded mx-5 mt-3 mb-3 landing-item">
+        <a href="#">
+                <div class="m-5 logo"><i class="fa fa-history fa-3x" aria-hidden="true"></i></div>
+                <div class="footer"><a href="#">My Orders</a></div>   
+            </a>      
+        </div> 
+        <div class="border-1 rounded mx-5 mt-3 mb-3 landing-item">
+        <a href="#">
+                <div class="m-5 logo"><i class="fa fa-history fa-3x" aria-hidden="true"></i></div>
+                <div class="footer"><a href="#">My Orders</a></div>   
+            </a>      
+        </div> 
+        <div class="border-1 rounded mx-5 mt-3 mb-3 landing-item">
+            <a href="#">
+                    <div class="m-5 logo"><i class="fa fa-bars fa-3x" aria-hidden="true"></i></div>
+                    <div class="footer"><a href="#">My Orders</a></div>   
+            </a>   
+        </div> 
+        <div class="border-1 rounded mx-5 mt-3 mb-3 landing-item">
+            <a href="#">
+                    <div class="m-5 logo"><i class="fa fa-upload fa-3x" aria-hidden="true"></i></div>
+                    <div class="footer"><a href="#">My Orders</a></div>   
+            </a>  
+        </div> 
+        <div class="border-1 rounded mx-5 mt-3 mb-3 landing-item">
+            <a href="#">
+                    <div class="m-5 logo"><i class="fa fa-first-order fa-3x" aria-hidden="true"></i></div>
+                    <div class="footer"><a href="#">My Orders</a></div>   
+            </a>  
+        </div>
+    </div>  -->
+
+
+<h5>News Feeds</h5>
+
+<div id="newsFeeds" class="row bg-faded p-4" style="padding-left: 3.0rem!important;">
+    <ng-template ngFor let-newsFeed let-i="index" [ngForOf]="newsFeeds">
+        <div class="col-4 rounded news-feed">
+            <div class=row>
+                <div class='col text-right news-feed-small-text news-feed-top-small-text'>{{newsFeed.postedDate | date:'dd/MM/yyyy HH:mm'}}</div>
+            </div>
+            <div class=row>
+                <div class='col news-feed-heading'>{{newsFeed.header}}</div>
+            </div>
+            <div class='row news-feed-content'>
+                <div class='col' [innerHTML]="newsFeed.shortDesc"></div>
+            </div>
+            <div class=row>
+                <div class='col-8'>
+                    <a href="javascript:void(0);" (click)="onViewNewsFeed(newsFeed);" data-toggle="modal" data-target="#display_newsFeed_modal">
+                        Read More
+                    </a>
+                </div>
+            </div>
+            <div class=row>
+                <div class='col text-right news-feed-small-text news-feed-bottom-small-text'>Posted by {{newsFeed.postedBy}}</div>
+            </div>
+        </div>
+        <div class="col-1 news-gap">&nbsp;</div>
+
+        <ng-template [ngIf]="i == 2 && newsFeeds.length > 3">
+            <div class="col-12 news-gap-line">&nbsp;</div>
+        </ng-template>
+    </ng-template>
+
+</div>
+
+<ng-template [ngIf]="newsFeeds != null && newsFeeds.length > 0">
+    <app-view-news-feed [allowEditing]="false"></app-view-news-feed>
+</ng-template>

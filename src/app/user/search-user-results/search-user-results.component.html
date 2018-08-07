@@ -1,0 +1,21 @@
+<ng-template [ngIf]="users.length > 0">
+  <div class=row>
+    <div class="col pb-3">
+        <h6>We found the following users matching your search criteria</h6>
+    </div>
+  </div>
+  <div class=row>
+    <div class=col>
+      <ng-template ngFor let-user [ngForOf]="users">
+        <app-search-user-card [user]="user"></app-search-user-card>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>
+<ng-template [ngIf]="!users || users.length == 0">
+  <div class=row>
+    <div class="col pb-3">
+      <h6>No users found that match your search criteria</h6>
+    </div>
+  </div>
+</ng-template>

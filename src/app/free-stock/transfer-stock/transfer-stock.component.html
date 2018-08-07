@@ -1,0 +1,89 @@
+<div class="modal-header">  
+  <h5 >{{headerTitle}}</h5>  
+</div>
+
+<div class="modal-body">
+    
+    <!-- Begin Form -->           
+    <form class="form-horizontal" 
+          role="form"
+          [formGroup]="transferForm"
+          novalidate>
+      <div class="row">      
+        <div class="col">
+          <h5>FROM</h5>            
+        </div>     
+        <div class="col text-right">            
+          <app-pool-patient-button-group [value]="fromPoolOrPatient" 
+                                         (valueChange)="onPoolOrPatientSwitchClicked($event)">
+          </app-pool-patient-button-group>                 
+        </div>          
+      </div>
+      <div class="row pb-3" *ngIf="fromPoolOrPatient == 'Patient'">      
+        <div class="col">
+            <label for="patientFrom">Patient:</label>
+            <app-search-patient 
+                [customerKey]="customerKey"
+                [searchText]="selectedPatientFrom.fullName"
+                (select)="onPatientFromSelected($event)">
+            </app-search-patient>
+        </div>          
+      </div>  
+      <div class="row pb-2">      
+        <div class="col">
+            <label for="quantityFrom">Quantity:</label>
+            <input class="form-control mr-2" 
+                id="quantityFrom"                                  
+                type="text" 
+                formControlName="quantityFrom" 
+                name="quantityFrom">
+        </div>          
+      </div>  
+      <div class="row">      
+        <div class="col">
+          <hr/>
+        </div>          
+      </div>  
+      <div class="row">      
+        <div class="col">
+          <h5>TO</h5>
+        </div>          
+      </div>  
+      <div class="row pb-3">      
+          <div class="col">
+              <label for="patientTo">Patient:</label>
+              <app-search-patient 
+                [customerKey]="customerKey"
+                [searchText]="selectedPatientTo.fullName"
+                (select)="onPatientToSelected($event)">
+              </app-search-patient>
+          </div>          
+        </div>  
+        <div class="row pb-3">      
+          <div class="col">
+              <label for="quantityTo">Quantity:</label>
+              <input class="form-control mr-2" 
+                  id="quantityTo"                                  
+                  type="text" 
+                  formControlName="quantityTo" 
+                  name="quantityTo">
+          </div>          
+        </div>  
+        <div class="row pb-3">      
+          <div class="col">
+              <label for="comments">Comments:</label>
+              <textarea class="form-control" 
+                        rows="3" 
+                        id="comments" 
+                        formControlName="comments" 
+                        name="comments">
+              </textarea>
+          </div>          
+        </div>
+    </form>      
+    <!-- End Form -->           
+</div>
+<div class="modal-footer">        
+    <button type="button" class="btn btn-link" id="CancelBtn" (click)="cancel()">Cancel</button>        
+    <button type="button" class="btn btn-primary" id="SaveBtn" (click)="transfer()">TRANSFER</button>
+</div>

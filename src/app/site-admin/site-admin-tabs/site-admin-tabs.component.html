@@ -1,0 +1,22 @@
+<div class=row>
+    <div class="col">
+        <h4>Site Administration</h4>
+    </div>
+</div>
+<div class=row>
+    <div class=col>
+        <mat-tab-group dynamicHeight="true" (selectedTabChange)="tabChanged($event)">
+            <mat-tab label="Uploads">
+                <app-site-uploads></app-site-uploads>
+            </mat-tab>
+            <mat-tab label="Manage News Feeds">
+                <app-site-news-feed [newsFeeds]="newsFeeds" [newsFeed]="newsFeed" *ngIf="displayNewsFeeds"></app-site-news-feed>
+                <app-create-news-feed *ngIf="!displayNewsFeeds" [newsFeed]="newsFeed" (cancel)="showNewsFeeds(false)"></app-create-news-feed>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+
+<ng-template [ngIf]="newsFeeds != null && newsFeeds.length > 0">
+    <app-view-news-feed [allowEditing]="true"></app-view-news-feed>
+</ng-template>

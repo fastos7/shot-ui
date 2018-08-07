@@ -1,0 +1,35 @@
+<div class="form-group" [formGroup]="parentForm">                
+    <div class="row">
+      <div class="col">
+          <label for="diluentContainer">Diluent / Container :</label>
+          <select class="form-control mb-0" id="diluentContainer" [compareWith]="compareDiluentContainer"
+                                       [ngModel]="selectedDeliveryMechanism" 
+                                       (ngModelChange)="onChangeDeliveryMechanism($event)"
+                                       formControlName="diluentContainer" 
+                                       name="diluentContainer">
+              <option *ngIf="product?.deliveryMechanisms?.length > 0" [ngValue]="null" >Select a Diluent / Container</option>
+              <option *ngFor="let deliveryMechanism of product?.deliveryMechanisms" [ngValue]="deliveryMechanism">{{deliveryMechanism.diluent.stockDescription + ' in ' + deliveryMechanism.container.stockDescription}}</option>              
+              <option *ngIf="product?.deliveryMechanisms?.length <= 0" [ngValue]="null">No Diluent / Container found.</option>
+          </select>
+          <div *ngIf="formErrors.diluentContainer" class="help error-block">{{formErrors.diluentContainer}}</div>
+      </div>  
+      <div class="col">
+          <label for="administrationRoute">Route :</label>
+          <select class="form-control mb-0" id="administrationRoute" [compareWith]="compareAdministrationRoute"
+                                       [ngModel]="selectedAdministrationRoute" 
+                                       (ngModelChange)="onChangeAdministrationRoute($event)"
+                                       formControlName="administrationRoute" 
+                                       name="administrationRoute">
+              <option *ngIf="productAttributes?.administrationRoutes?.length > 0" [ngValue]="null" >Select a Route</option>
+              <option *ngFor="let administrationRouteMapping of productAttributes?.administrationRoutes" [ngValue]="administrationRouteMapping.administrationRoute">{{administrationRouteMapping.administrationRoute.description}}</option>              
+              <option *ngIf="productAttributes?.administrationRoutes?.length <= 0" [ngValue]="null">No Route found.</option>
+          </select>                      
+          <div *ngIf="formErrors.administrationRoute" class="help error-block">{{formErrors.administrationRoute}}</div>
+      </div>          
+    </div> 
+    <div class="row" *ngIf="showRemovedClosedSystem">
+        <div class="col pt-0">    
+            <input type="checkbox" value="" class="mr-2" formControlName="closedSystem" id="closedSystem">Removed closed system
+        </div> 
+    </div>    
+</div>  

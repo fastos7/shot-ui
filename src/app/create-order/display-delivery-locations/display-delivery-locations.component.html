@@ -1,0 +1,11 @@
+<div class="form-group" [formGroup]="form">
+  <label for="deliveryLocation">Delivery Location: </label>
+  <select class="form-control mb-0" name="deliveryLocation" id="deliveryLocation" [formControlName]=DELIVERY_LOC [compareWith]="compareDeliveryLocation">
+      <ng-template ngFor let-deliveryLoc [ngForOf]="deliveryLocations" let-dl="index">
+          <option [ngValue]="deliveryLoc">{{deliveryLoc.locationName}}</option>
+      </ng-template>
+  </select>
+  <div *ngIf="!validateDeliveryLocation()" class="help error-block">
+      {{DELIVERY_DV_LOC_ERROR}}
+  </div>
+</div>
